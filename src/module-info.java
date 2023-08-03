@@ -4,4 +4,5 @@ module FurEverHome {
 	requires java.sql;
 	
 	opens application to javafx.graphics, javafx.fxml;
+	opens Controllers to javafx.fxml;
 }
