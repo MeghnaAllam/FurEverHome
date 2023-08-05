@@ -34,7 +34,7 @@ public class DbConnection {
             connection();            
             return statement.executeQuery(query);
         }catch(SQLException e){
-            e.getMessage();
+        	e.printStackTrace();
             return null;
             
         }
@@ -46,9 +46,9 @@ public class DbConnection {
             connection();
             return statement.execute(query);
         }catch(SQLException e){
-            e.getMessage();
-            throw new IllegalArgumentException();
+        	e.printStackTrace();
         }
+		return true;
     }
     
     /* Prepares the data first then execute it */

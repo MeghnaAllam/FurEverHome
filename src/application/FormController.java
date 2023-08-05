@@ -1,5 +1,4 @@
 package application;
-import services.petInfoDbConnect;
 
 
 import java.io.File;
@@ -11,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +32,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -62,7 +64,7 @@ public class FormController implements Initializable {
     
     
     @FXML
-    private TableColumn<?, ?> petAge;
+    private TableColumn<PetData, String> petAgetb;
 
     @FXML
     private TextField petAgeInput;
@@ -71,28 +73,29 @@ public class FormController implements Initializable {
     private Label petAgeLbl;
 
     @FXML
-    private TableColumn<?, ?> petBreed;
-
+    private TableColumn<PetData, String> petBreedtb;
+    
+    
     @FXML
-    private TableColumn<?, ?> petCategory;
+    private TableColumn<PetData, String> petCategorytb;
 
     @FXML
     private Label petCategoryLabel;
 
-    @FXML
-    private TableColumn<?, ?> petId;
 
     @FXML
-    private TableColumn<?, ?> petName;
+    private TableColumn<PetData, String> petNametb;
 
+    @FXML
+    private TableColumn<PetData, String> petSextb;
+    
     @FXML
     private TextField petNameInput;
 
     @FXML
     private Label petNameLabel;
 
-    @FXML
-    private TableColumn<?, ?> petSex;
+   
 
     @FXML
     private TextField priceInput;
@@ -110,7 +113,7 @@ public class FormController implements Initializable {
     private AnchorPane showActivity;
 
     @FXML
-    private TableView<?> showHome;
+    private TableView<PetData> showHome;
 
     @FXML
     private Button submitBtn;
@@ -131,9 +134,6 @@ public class FormController implements Initializable {
 
     @FXML
     private AnchorPane homePage;
-
-    @FXML
-    private TableColumn<?, ?> listingId;
 
     @FXML
     private Button activityBtn;
@@ -166,7 +166,7 @@ public class FormController implements Initializable {
 			
 			if(petNameInput.getText().isEmpty()
 					||petAgeInput.getText().isEmpty()
-					||petBreed.getText().isEmpty()
+					||petBreedInput.getText().isEmpty()
 		|| myChoiceBox.getSelectionModel().getSelectedItem() == null
 		|| (RadioButton)sex.getSelectedToggle() == null
 		|| (RadioButton)PetCategory.getSelectedToggle() == null
@@ -177,13 +177,15 @@ public class FormController implements Initializable {
 				alert.setHeaderText(null);
 				alert.setContentText("Please fill all the fields in the form to proceed");
 				alert.showAndWait();
+				//clears the form
+				addPetsClear();
 			}
 			
 			else {
 
 				String petName = petNameInput.getText();
 				int petAge = Integer.parseInt(petAgeInput.getText());
-				String breed = petBreed.getText();
+				String breed = petBreedInput.getText();
 				int price = Integer.parseInt(priceInput.getText());
 				String choiceOfSelection = (String)myChoiceBox.getSelectionModel().getSelectedItem();
 				String selectedpetSex=null;
@@ -202,42 +204,50 @@ public class FormController implements Initializable {
 				alert.setContentText("Successfully Added");
 				alert.showAndWait();
 				
+				//clears the form
+				addPetsClear();
 				
+				//show in the table
+				addPetsShowListTable();
 			
-			petData pd = new petData(petName,petAge,breed,price, choiceOfSelection,selectedPetCategory,selectedpetSex);
+			PetData pd = new PetData(petName,petAge,breed,price, choiceOfSelection,selectedPetCategory,selectedpetSex);
 			
-String sql = "INSERT INTO `petinfo`(`First_Name`, `Last_Name`,`Email_id`,`Password`,`Type`,`Country`,`Status`) "
-//
-//				        + "VALUES ('" + pd.getPetName()+ "','" + pd.getSex()+ "','" + pd.getAge()+ "','" + pd.getPetCategory()+ "','" + pd.getBreed()+ "')";
-//    DbConnection.query(sql);
-//    
-//    System.out.println(sql);
+String sql = "INSERT INTO `petinfo`(`petCategory`,`petName`,`age`,`breed`,`sellerChoice`,`sellerID`,`sex`,`price`) "
+
+			        + "VALUES ('" + pd.getPetCategory()+ "','" + pd.getPetName()+ "','" + pd.getAge()+ "','" + pd.getBreed()+ "','" 
+			+ pd.getChoiceOfSelection()+ "', '10' ,'" + pd.getSex()+"', '" + pd.getPrice()+"')";
+System.out.println(sql);
+        DbConnection.query(sql);   
+  
 		}	
 		}	
 
 	    
-		catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		catch(NumberFormatException e) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error Message");
 			alert.setHeaderText(null);
 			alert.setContentText("Please fill all the information correctly");
 			alert.showAndWait();
-	}
-}
+			addPetsClear();
+			}
 		
-		
-		
-		
-		
-		
-		
-
-
-
-
+		catch(Exception e) {
+			e.printStackTrace();
+			addPetsClear();
+		}
 	
+}
+	
+	public void addPetsClear() {
+		petNameInput.setText("");
+		petAgeInput.setText("");
+		petBreedInput.setText("");
+		priceInput.setText("");
+		myChoiceBox.getSelectionModel().clearSelection();
+		sex.selectToggle(null);
+		PetCategory.selectToggle(null);
+	}
 	
 	public void switchForm(ActionEvent event) {
 		if(event.getSource() == homeBtn ) {
@@ -260,7 +270,16 @@ String sql = "INSERT INTO `petinfo`(`First_Name`, `Last_Name`,`Email_id`,`Passwo
 		}
 	}
 	
-
+	private ObservableList<PetData> addPetsList;
+public void addPetsShowListTable() throws SQLException {
+	addPetsList = fetchPetDataList();
+	petCategorytb.setCellValueFactory(new PropertyValueFactory<>("petCategory"));
+	petNametb.setCellValueFactory(new PropertyValueFactory<>("petName"));
+	petBreedtb.setCellValueFactory(new PropertyValueFactory<>("breed"));
+	petAgetb.setCellValueFactory(new PropertyValueFactory<>("age"));
+	petSextb.setCellValueFactory(new PropertyValueFactory<>("sex"));
+	showHome.setItems(addPetsList);
+}
 	
 	
 	private double x= 0;
@@ -333,4 +352,54 @@ String sql = "INSERT INTO `petinfo`(`First_Name`, `Last_Name`,`Email_id`,`Passwo
 		}
 
 }
+	
+	
+	  public ObservableList<PetData> fetchPetDataList() throws SQLException {
+
+	        ObservableList<PetData> petdataList = FXCollections.observableArrayList();
+
+	        String query = "select * from petinfo";
+
+
+	        System.out.println("query " + query);
+
+	        ResultSet resultSet = DbConnection.selectQuery(query);
+
+	        if (resultSet != null) {
+
+	            while (resultSet.next()) {
+	            	
+
+	            String petName = resultSet.getString("petName");
+	            int price = Integer.parseInt(resultSet.getString("price"));
+
+	            int age = Integer.parseInt(resultSet.getString("age"));
+	            String petCategory = resultSet.getString("petCategory");
+
+	            String sellerChoice = resultSet.getString("sellerChoice");
+
+	            String sex = resultSet.getString("sex");
+	            String breed = resultSet.getString("breed");
+
+
+	           PetData petDataInfo = new PetData(petName,age,breed,price,sellerChoice,petCategory,sex);            
+
+	          //  boolean empStatus = dbStatus.equals("0") ? false : true;
+
+	           // justiceDepartmentEmployee.setStatus(empStatus);
+
+	          //  justiceDepartmentEmployee.setId(id);
+
+	       petdataList.add(petDataInfo);
+	       System.out.println(sellerChoice);
+
+	           
+
+	        }  
+
+	        }
+
+	        return petdataList;
+
+	    }
 }
