@@ -27,5 +27,9 @@ public class LoginController {
 		Main m = new Main();
 		m.changeScene("sellerDashboard.fxml");
 	}
-
+	
+	public void onSignUp() {
+		Main m = new Main();
+		m.changeScene("register.fxml");
+	}
 }

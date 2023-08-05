@@ -51,7 +51,7 @@
                <font>
                   <Font size="13.0" />
                </font></Label>
-            <Hyperlink alignment="CENTER" layoutX="81.0" layoutY="330.0" prefHeight="24.0" prefWidth="64.0" text="Sign Up">
+            <Hyperlink alignment="CENTER" layoutX="81.0" layoutY="330.0" onAction="#onSignUp" prefHeight="24.0" prefWidth="64.0" text="Sign Up">
                <font>
                   <Font size="13.0" />
                </font>

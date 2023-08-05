@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DbConnection {
-	private static final String URL = "jdbc:mysql://localhost:3306/fureverhomedb?zeroDateBehavior=convertToNull";
+	private static final String URL = "jdbc:mysql://localhost:3306/fureverhomedb";
     private static final String USER_NAME = "root";
     private static final String RAMIT_PASSWORD = "qwertyuiop";
     private static final String MEGHNA_PASSWORD = "root";
@@ -19,11 +19,13 @@ public class DbConnection {
     /* Creating Connection*/
     public static void connection(){
        try{
+    	   System.out.println(SHREYA_PASSWORD);
             connection = DriverManager.getConnection(URL, USER_NAME, SHREYA_PASSWORD);
-
+            System.out.println(connection);
             statement = connection.createStatement();
             System.out.println("Connection Opened");
-        }catch(SQLException e){            
+        }catch(SQLException e){   
+        	e.printStackTrace();
             //JOptionPane.showMessageDialog(null, "Connection is not Opened ! " + e.getMessage());      
         }
     }

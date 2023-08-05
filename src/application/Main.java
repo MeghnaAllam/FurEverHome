@@ -33,6 +33,7 @@ public class Main extends Application {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/UI/" + fxmlFile));
 			stage.getScene().setRoot(root);
+			stage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
