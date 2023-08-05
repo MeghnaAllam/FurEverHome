@@ -4,7 +4,9 @@ public class Buyer extends Person {
 	
 	private String password;
 	private String type;
+	private int buyerId;
 	
+
 	public Buyer(String fName, String lName, String emailId, String password, String state, String city, String type) {
 		setfName(fName);
 		setlName(lName);
@@ -13,6 +15,14 @@ public class Buyer extends Person {
 		setState(state);
 		setCity(city);
 		setType(type);
+	}
+	
+	public int getBuyerId() {
+		return buyerId;
+	}
+
+	public void setBuyerId(int buyerId) {
+		this.buyerId = buyerId;
 	}
 
 	public String getPassword() {

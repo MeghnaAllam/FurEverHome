@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import utilities.Constants;
 
 public class RegisterController {
 	
@@ -50,7 +51,7 @@ public class RegisterController {
 		
 		//Seller Type selected
 		if(sellerType.isSelected()) {
-			String type = "seller";
+			String type = Constants.SELLER;
 			Seller seller = new Seller(firstName, lastName, emailID, passwordField, stateField, cityField, type);
 			SellerService ss = new SellerService(seller);
 			try{
@@ -62,7 +63,7 @@ public class RegisterController {
 		
 		//Buyer type selected
 		if(buyerType.isSelected()) {
-			String type = "buyer";
+			String type = Constants.BUYER;
 			Buyer buyer = new Buyer(firstName, lastName, emailID, passwordField, stateField, cityField, type);
 			BuyerService bs = new BuyerService(buyer);
 			try{

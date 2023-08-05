@@ -33,7 +33,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="emailId" layoutX="80.0" layoutY="141.0" prefHeight="26.0" prefWidth="139.0" />
+            <TextField fx:id="emailIdField" layoutX="80.0" layoutY="141.0" prefHeight="26.0" prefWidth="139.0" />
             <Button layoutX="40.0" layoutY="239.0" mnemonicParsing="false" onAction="#onLogin" prefHeight="26.0" prefWidth="152.0" style="-fx-background-color: green; -fx-text-fill: white; -fx-font-weight: bold;" text="LOGIN" wrapText="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -56,7 +56,7 @@
                   <Font size="13.0" />
                </font>
             </Hyperlink>
-            <PasswordField fx:id="password" layoutX="80.0" layoutY="178.0" prefHeight="26.0" prefWidth="139.0" />
+            <PasswordField fx:id="passwordField" layoutX="80.0" layoutY="178.0" prefHeight="26.0" prefWidth="139.0" />
          </children>
       </AnchorPane>
    </children>
