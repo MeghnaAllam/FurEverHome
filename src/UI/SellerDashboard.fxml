@@ -19,18 +19,16 @@
    <children>
       <AnchorPane fx:id="homePage" prefHeight="541.0" prefWidth="669.0">
          <children>
-            <TableView fx:id="showHome" layoutX="9.0" layoutY="49.0" prefHeight="469.0" prefWidth="641.0">
+            <TableView fx:id="showHome" layoutX="9.0" layoutY="49.0" prefHeight="469.0" prefWidth="641.0" visible="false">
               <columns>
-                  <TableColumn fx:id="listingId" prefWidth="75.0" text="Listing ID" />
-                <TableColumn fx:id="petId" prefWidth="58.6666259765625" text="Pet ID" />
                 <TableColumn fx:id="petCategory" prefWidth="133.33334350585938" text="Pet Category" />
-                  <TableColumn fx:id="petName" prefWidth="98.66668701171875" text="Pet Name" />
-                  <TableColumn fx:id="petBreed" prefWidth="126.0" text="Breed" />
-                  <TableColumn fx:id="petAge" prefWidth="56.6666259765625" text="Age" />
-                  <TableColumn fx:id="petSex" prefWidth="46.66668701171875" text="Sex" />
+                  <TableColumn fx:id="petName" prefWidth="160.66665649414062" text="Pet Name" />
+                  <TableColumn fx:id="petBreed" prefWidth="138.66668701171875" text="Breed" />
+                  <TableColumn fx:id="petAge" prefWidth="73.33331298828125" text="Age" />
+                  <TableColumn fx:id="petSex" prefWidth="93.3333740234375" text="Sex" />
               </columns>
             </TableView>
-            <AnchorPane fx:id="addPetsPage" layoutX="14.0" layoutY="58.0" prefHeight="493.0" prefWidth="710.0" visible="false" AnchorPane.bottomAnchor="-78.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="58.0">
+            <AnchorPane fx:id="addPetsPage" layoutX="1.0" layoutY="58.0" prefHeight="469.0" prefWidth="682.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="58.0">
                <children>
                   <ListView fx:id="listview" layoutX="372.0" layoutY="341.0" prefHeight="73.0" prefWidth="200.0" />
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="244.0" layoutY="28.0" prefHeight="35.0" prefWidth="124.0" text="Add Pets">
@@ -94,7 +92,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="submitBtn" alignment="CENTER" contentDisplay="BOTTOM" layoutX="260.0" layoutY="433.0" mnemonicParsing="false" text="SUBMIT" textAlignment="CENTER">
+                  <Button fx:id="submitBtn" alignment="CENTER" contentDisplay="BOTTOM" layoutX="260.0" layoutY="414.0" mnemonicParsing="false" onAction="#onSubmitbtn" text="SUBMIT" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -123,6 +121,12 @@
                      </font>
                   </Label>
                   <TextField fx:id="priceInput" layoutX="157.0" layoutY="286.0" />
+                  <TextField fx:id="petBreedInput" layoutX="437.0" layoutY="235.0" prefHeight="25.0" prefWidth="188.0" />
+                  <Label fx:id="breedLbl" layoutX="385.0" layoutY="237.0" text="Breed">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="showActivity" layoutX="1.0" layoutY="50.0" prefHeight="486.0" prefWidth="654.0" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="50.0">

@@ -1,7 +1,12 @@
 package application;
+import services.petInfoDbConnect;
+
 
 import java.io.File;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -32,6 +37,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utilities.DbConnection;
 
 public class FormController implements Initializable {
 	FileChooser fileChooser = new FileChooser();
@@ -131,6 +137,10 @@ public class FormController implements Initializable {
 
     @FXML
     private Button activityBtn;
+    
+
+    @FXML
+    private TextField petBreedInput;
 
     @FXML
     private Button addPetsBtn;
@@ -139,7 +149,7 @@ public class FormController implements Initializable {
     
 
     @FXML
-    private Button logoutBtn;
+	public Button logoutBtn;
     
     
 	@FXML
@@ -149,6 +159,84 @@ public class FormController implements Initializable {
 	
 	private String[] userOptions = {"Donate", "Sell"};
 	
+	public void onSubmitbtn(ActionEvent event) {
+		
+		try {
+		
+			
+			if(petNameInput.getText().isEmpty()
+					||petAgeInput.getText().isEmpty()
+					||petBreed.getText().isEmpty()
+		|| myChoiceBox.getSelectionModel().getSelectedItem() == null
+		|| (RadioButton)sex.getSelectedToggle() == null
+		|| (RadioButton)PetCategory.getSelectedToggle() == null
+		|| priceInput.getText().isEmpty()) {
+				
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error Message");
+				alert.setHeaderText(null);
+				alert.setContentText("Please fill all the fields in the form to proceed");
+				alert.showAndWait();
+			}
+			
+			else {
+
+				String petName = petNameInput.getText();
+				int petAge = Integer.parseInt(petAgeInput.getText());
+				String breed = petBreed.getText();
+				int price = Integer.parseInt(priceInput.getText());
+				String choiceOfSelection = (String)myChoiceBox.getSelectionModel().getSelectedItem();
+				String selectedpetSex=null;
+				RadioButton selectedRadioButton = (RadioButton)sex.getSelectedToggle(); 
+				if (selectedRadioButton != null) {
+					selectedpetSex = selectedRadioButton.getText();
+				}
+				String selectedPetCategory=null;
+				RadioButton rb = (RadioButton)PetCategory.getSelectedToggle(); 
+				if (selectedRadioButton != null) {
+					selectedPetCategory = selectedRadioButton.getText();
+				}
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Information Message");
+				alert.setHeaderText(null);
+				alert.setContentText("Successfully Added");
+				alert.showAndWait();
+				
+				
+			
+			petData pd = new petData(petName,petAge,breed,price, choiceOfSelection,selectedPetCategory,selectedpetSex);
+			
+String sql = "INSERT INTO `petinfo`(`First_Name`, `Last_Name`,`Email_id`,`Password`,`Type`,`Country`,`Status`) "
+//
+//				        + "VALUES ('" + pd.getPetName()+ "','" + pd.getSex()+ "','" + pd.getAge()+ "','" + pd.getPetCategory()+ "','" + pd.getBreed()+ "')";
+//    DbConnection.query(sql);
+//    
+//    System.out.println(sql);
+		}	
+		}	
+
+	    
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Message");
+			alert.setHeaderText(null);
+			alert.setContentText("Please fill all the information correctly");
+			alert.showAndWait();
+	}
+}
+		
+		
+		
+		
+		
+		
+		
+
+
+
+
 	
 	
 	public void switchForm(ActionEvent event) {
@@ -157,6 +245,7 @@ public class FormController implements Initializable {
 			showHome.setVisible(true);
 			addPetsPage.setVisible(false);
 			showActivity.setVisible(false);
+		
 		}
 		else if(event.getSource() == addPetsBtn) {
 			showHome.setVisible(false);
@@ -172,6 +261,8 @@ public class FormController implements Initializable {
 	}
 	
 
+	
+	
 	private double x= 0;
 	private double y=0;
 	
