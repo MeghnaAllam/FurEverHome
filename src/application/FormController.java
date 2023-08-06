@@ -33,6 +33,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -95,7 +96,8 @@ public class FormController implements Initializable {
     @FXML
     private Label petNameLabel;
 
-   
+    @FXML
+    private TableColumn<PetData, String> deletetb;
 
     @FXML
     private TextField priceInput;
@@ -111,6 +113,9 @@ public class FormController implements Initializable {
 
     @FXML
     private AnchorPane showActivity;
+    
+    @FXML
+    private TableColumn<PetData, String> actiontb;
 
     @FXML
     private TableView<PetData> showHome;
@@ -159,6 +164,7 @@ public class FormController implements Initializable {
 	
 	private String[] userOptions = {"Donate", "Sell"};
 	
+	
 	public void onSubmitbtn(ActionEvent event) {
 		
 		try {
@@ -169,14 +175,14 @@ public class FormController implements Initializable {
 					||petBreedInput.getText().isEmpty()
 		|| myChoiceBox.getSelectionModel().getSelectedItem() == null
 		|| (RadioButton)sex.getSelectedToggle() == null
-		|| (RadioButton)PetCategory.getSelectedToggle() == null
-		|| priceInput.getText().isEmpty()) {
+		|| (RadioButton)PetCategory.getSelectedToggle() == null) {
 				
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error Message");
 				alert.setHeaderText(null);
 				alert.setContentText("Please fill all the fields in the form to proceed");
 				alert.showAndWait();
+				
 				//clears the form
 				addPetsClear();
 			}
@@ -186,8 +192,15 @@ public class FormController implements Initializable {
 				String petName = petNameInput.getText();
 				int petAge = Integer.parseInt(petAgeInput.getText());
 				String breed = petBreedInput.getText();
-				int price = Integer.parseInt(priceInput.getText());
+				int price=0;
+				if(!priceInput.getText().isEmpty()) {
+					price = Integer.parseInt(priceInput.getText());
+				}
+				
+				//System.out.println(price);
 				String choiceOfSelection = (String)myChoiceBox.getSelectionModel().getSelectedItem();
+				
+				
 				String selectedpetSex=null;
 				RadioButton selectedRadioButton = (RadioButton)sex.getSelectedToggle(); 
 				if (selectedRadioButton != null) {
@@ -216,7 +229,7 @@ String sql = "INSERT INTO `petinfo`(`petCategory`,`petName`,`age`,`breed`,`selle
 
 			        + "VALUES ('" + pd.getPetCategory()+ "','" + pd.getPetName()+ "','" + pd.getAge()+ "','" + pd.getBreed()+ "','" 
 			+ pd.getChoiceOfSelection()+ "', '10' ,'" + pd.getSex()+"', '" + pd.getPrice()+"')";
-System.out.println(sql);
+//System.out.println(sql);
         DbConnection.query(sql);   
   
 		}	
@@ -249,9 +262,10 @@ System.out.println(sql);
 		PetCategory.selectToggle(null);
 	}
 	
-	public void switchForm(ActionEvent event) {
+	public void switchForm(ActionEvent event) throws SQLException {
 		if(event.getSource() == homeBtn ) {
 			
+			addPetsShowListTable();
 			showHome.setVisible(true);
 			addPetsPage.setVisible(false);
 			showActivity.setVisible(false);
@@ -278,6 +292,8 @@ public void addPetsShowListTable() throws SQLException {
 	petBreedtb.setCellValueFactory(new PropertyValueFactory<>("breed"));
 	petAgetb.setCellValueFactory(new PropertyValueFactory<>("age"));
 	petSextb.setCellValueFactory(new PropertyValueFactory<>("sex"));
+	actiontb.setCellValueFactory(new PropertyValueFactory<>("viewButton"));
+	deletetb.setCellValueFactory(new PropertyValueFactory<>("deleteButton"));
 	showHome.setItems(addPetsList);
 }
 	
@@ -332,9 +348,29 @@ public void addPetsShowListTable() throws SQLException {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		try {
+			addPetsShowListTable();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		myChoiceBox.getItems().addAll(userOptions);
 		
+		myChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if((String)myChoiceBox.getSelectionModel().getSelectedItem()== "Sell") {
+				priceLbl.setVisible(true);
+				priceInput.setVisible(true);
+			}
+			else {
+				priceLbl.setVisible(false);
+				priceInput.setVisible(false);
+			}
+			});
+		
 	}
+	
+
+    
 	
 	@FXML
     void uploadImages(MouseEvent event) {
@@ -361,7 +397,7 @@ public void addPetsShowListTable() throws SQLException {
 	        String query = "select * from petinfo";
 
 
-	        System.out.println("query " + query);
+	        //System.out.println("query " + query);
 
 	        ResultSet resultSet = DbConnection.selectQuery(query);
 
@@ -391,7 +427,7 @@ public void addPetsShowListTable() throws SQLException {
 	          //  justiceDepartmentEmployee.setId(id);
 
 	       petdataList.add(petDataInfo);
-	       System.out.println(sellerChoice);
+	      // System.out.println(sellerChoice);
 
 	           
 

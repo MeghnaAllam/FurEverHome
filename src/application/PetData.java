@@ -1,5 +1,7 @@
 package application;
 
+import javafx.scene.control.Button;
+
 public class PetData {
 
 	private Integer age;
@@ -9,6 +11,8 @@ public class PetData {
 	private Integer price;
 	private String choiceOfSelection;
 	private String breed;
+	private Button viewButton;
+	private Button deleteButton;
 	
 	
 	public PetData(String petName,Integer age, String breed, Integer price, String choiceOfSelection, String petCategory, String sex) {
@@ -20,6 +24,32 @@ public class PetData {
 		this.petName = petName;
 		this.sex = sex;
 		this.breed = breed;
+		this.viewButton = new Button("View More");
+		this.deleteButton = new Button("Delete");
+	}
+
+
+
+	public Button getDeleteButton() {
+		return deleteButton;
+	}
+
+
+
+	public void setDeleteButton(Button deleteButton) {
+		this.deleteButton = deleteButton;
+	}
+
+
+
+	public Button getViewButton() {
+		return viewButton;
+	}
+
+
+
+	public void setViewButton(Button button) {
+		this.viewButton = button;
 	}
 
 
