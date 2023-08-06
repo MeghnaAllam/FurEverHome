@@ -5,4 +5,5 @@ module FurEverHome {
 	
 	opens application to javafx.graphics, javafx.fxml;
 	opens Controllers to javafx.fxml;
+	opens Model to javafx.fxml, javafx.base;
 }

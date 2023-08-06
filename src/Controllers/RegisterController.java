@@ -76,6 +76,6 @@ public class RegisterController {
 	
 	public void onLogin() {
 		Main m = new Main();
-		m.changeScene("login.fxml");
+		m.changeScene("login.fxml", null);
 	}
 }

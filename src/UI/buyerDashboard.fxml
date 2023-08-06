@@ -21,13 +21,13 @@
    <center>
       <AnchorPane fx:id="homePane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView prefHeight="346.0" prefWidth="600.0">
+            <TableView fx:id="tableView" prefHeight="346.0" prefWidth="600.0">
               <columns>
-                <TableColumn prefWidth="144.0" text="Pet Category" />
-                <TableColumn prefWidth="112.79998779296875" text="Pet Name" />
-                  <TableColumn prefWidth="144.0" text="Breed" />
-                  <TableColumn prefWidth="88.0" text="Age" />
-                  <TableColumn prefWidth="107.2000732421875" text="Sex" />
+                <TableColumn fx:id="petCategoryColumn" prefWidth="144.0" text="Pet Category" />
+                <TableColumn fx:id="petNameColumn" prefWidth="112.79998779296875" text="Pet Name" />
+                  <TableColumn fx:id="breedColumn" prefWidth="144.0" text="Breed" />
+                  <TableColumn fx:id="ageColumn" prefWidth="88.0" text="Age" />
+                  <TableColumn fx:id="sexColumn" prefWidth="107.2000732421875" text="Sex" />
               </columns>
             </TableView>
          </children>

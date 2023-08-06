@@ -37,7 +37,7 @@ public class LoginController {
 			try {
 				Seller s = ls.loginSeller();
 				if (s != null) {
-					signInSeller();
+					signInSeller(s);
 				} else {
 					Buyer b = ls.loginBuyer();
 					
@@ -54,7 +54,7 @@ public class LoginController {
 	
 	public void onSignUp() {
 		Main m = new Main();
-		m.changeScene("register.fxml");
+		m.changeScene("register.fxml", null);
 	}
 	
 	public boolean validateInputFields() {
@@ -63,12 +63,11 @@ public class LoginController {
 	
 	public void signInBuyer(Buyer buyer) {
 		Main m = new Main();
-		m.changeScene("buyerDashboard.fxml");
-		BuyerController b = new BuyerController(buyer);
+		m.changeScene("buyerDashboard.fxml", buyer);
 	}
 	
-	public void signInSeller() {
+	public void signInSeller(Seller seller) {
 		Main m = new Main();
-		m.changeScene("SellerDashboard.fxml");
+		m.changeScene("SellerDashboard.fxml", seller);
 	}
 }

@@ -2,6 +2,8 @@ package application;
 	
 import java.io.IOException;
 
+import Controllers.BuyerController;
+import Model.Buyer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -31,9 +33,14 @@ public class Main extends Application {
 		launch(args);
 	}
 	
-	public void changeScene(String fxmlFile) {
+	public void changeScene(String fxmlFile, Object o) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/UI/" + fxmlFile));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/UI/" + fxmlFile));
+			Parent root = loader.load();
+			if (o instanceof Buyer) {
+				BuyerController bc = loader.getController();
+				bc.initData(o);
+			}
 			stage.getScene().setRoot(root);
 			stage.show();
 		} catch (IOException e) {
