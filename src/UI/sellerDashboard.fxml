@@ -15,20 +15,20 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="541.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.FormController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="541.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.FormController">
    <children>
       <AnchorPane fx:id="homePage" prefHeight="541.0" prefWidth="669.0">
          <children>
-            <TableView fx:id="showHome" layoutX="1.0" layoutY="49.0" prefHeight="494.0" prefWidth="662.0">
+            <TableView fx:id="showHome" layoutX="9.0" layoutY="49.0" prefHeight="469.0" prefWidth="641.0" visible="false">
               <columns>
                 <TableColumn fx:id="petCategory" prefWidth="133.33334350585938" text="Pet Category" />
                   <TableColumn fx:id="petName" prefWidth="160.66665649414062" text="Pet Name" />
                   <TableColumn fx:id="petBreed" prefWidth="138.66668701171875" text="Breed" />
-                  <TableColumn fx:id="petAge" prefWidth="118.39999389648438" text="Age" />
-                  <TableColumn fx:id="petSex" prefWidth="107.99993896484375" text="Sex" />
+                  <TableColumn fx:id="petAge" prefWidth="73.33331298828125" text="Age" />
+                  <TableColumn fx:id="petSex" prefWidth="93.3333740234375" text="Sex" />
               </columns>
             </TableView>
-            <AnchorPane fx:id="addPetsPage" layoutX="1.0" layoutY="58.0" prefHeight="469.0" prefWidth="682.0" visible="false" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="58.0">
+            <AnchorPane fx:id="addPetsPage" layoutX="1.0" layoutY="58.0" prefHeight="469.0" prefWidth="682.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="58.0">
                <children>
                   <ListView fx:id="listview" layoutX="372.0" layoutY="341.0" prefHeight="73.0" prefWidth="200.0" />
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="244.0" layoutY="28.0" prefHeight="35.0" prefWidth="124.0" text="Add Pets">

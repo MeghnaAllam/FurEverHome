@@ -1,6 +1,6 @@
-package application;
+package Model;
 
-public class petData {
+public class PetData {
 
 	private Integer age;
 	private String petCategory;
@@ -11,7 +11,7 @@ public class petData {
 	private String breed;
 	
 	
-	public petData(String petName,Integer age, String breed, Integer price, String choiceOfSelection, String petCategory, String sex) {
+	public PetData(String petName,Integer age, String breed, Integer price, String choiceOfSelection, String petCategory, String sex) {
 		//this.listingId = listingId;
 		this.age = age;
 		this.choiceOfSelection = choiceOfSelection;

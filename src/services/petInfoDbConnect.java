@@ -1,17 +1,17 @@
 package Services;
 
-import application.petData;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import application.petData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utilities.DbConnection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import Model.PetData;
+
 import java.sql.Connection;
 
 public class petInfoDbConnect {
@@ -22,9 +22,9 @@ public class petInfoDbConnect {
 	private PreparedStatement prepare;
 	//private DbConnection database;
 	
-	  public ArrayList<petData> fetchJusticeDeptEmpData(int listingId, int age, String petCategory,String petName, String sex, String breed) throws SQLException {
+	  public ArrayList<PetData> fetchJusticeDeptEmpData(int listingId, int age, String petCategory,String petName, String sex, String breed) throws SQLException {
 
-	        ArrayList<petData> petdataList = new ArrayList<petData>();
+	        ArrayList<PetData> petdataList = new ArrayList<PetData>();
 
 	        String query = "select * from petinfo";
 
