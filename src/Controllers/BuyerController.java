@@ -21,8 +21,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -118,6 +122,26 @@ public class BuyerController implements Initializable {
 		
 		if (petDetailsList != null && petDetailsList.size() > 0) {
 			tableView.setItems(petDetailsList);
+			
+			tableView.setRowFactory(tv -> {
+			    TableRow<PetData> row = new TableRow<PetData>();
+			    row.setOnMouseClicked(event -> {
+			        if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
+			        	System.out.println("row selected");
+			            PetData selectedPet = row.getItem();
+			            System.out.println("row selected: " + selectedPet.getPetId());
+			        }
+			        
+			        try {
+			        	loadPetDetailsPage();
+			        }
+			        catch(Exception e) {
+			        	
+			        }
+			        
+			    });
+			    return row ;
+			});
 		}
 	}
 	
@@ -131,6 +155,13 @@ public class BuyerController implements Initializable {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	
+	public void loadPetDetailsPage() throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("/UI/buyerPetDetailsPane.fxml"));
+		mainPane.setCenter(root);
+
 	}
 
 }

@@ -21,7 +21,7 @@
    <center>
       <AnchorPane fx:id="homePane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="tableView" prefHeight="346.0" prefWidth="600.0">
+            <TableView fx:id="tableView" onMouseClicked="#loadPetDetailsPage" prefHeight="346.0" prefWidth="600.0">
               <columns>
                 <TableColumn fx:id="petCategoryColumn" prefWidth="144.0" text="Pet Category" />
                 <TableColumn fx:id="petNameColumn" prefWidth="112.79998779296875" text="Pet Name" />
