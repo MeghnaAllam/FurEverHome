@@ -127,18 +127,14 @@ public class BuyerController implements Initializable {
 			    TableRow<PetData> row = new TableRow<PetData>();
 			    row.setOnMouseClicked(event -> {
 			        if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
-			        	System.out.println("row selected");
 			            PetData selectedPet = row.getItem();
-			            System.out.println("row selected: " + selectedPet.getPetId());
+			            try {
+				        	loadPetDetailsPage(selectedPet);
+				        }
+				        catch(Exception e) {
+				       
+				        } 
 			        }
-			        
-			        try {
-			        	loadPetDetailsPage();
-			        }
-			        catch(Exception e) {
-			        	
-			        }
-			        
 			    });
 			    return row ;
 			});
@@ -158,10 +154,12 @@ public class BuyerController implements Initializable {
 	}
 	
 	
-	public void loadPetDetailsPage() throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("/UI/buyerPetDetailsPane.fxml"));
+	public void loadPetDetailsPage(PetData petData) throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/UI/buyerPetDetailsPane.fxml"));
+		Parent root = loader.load();
+		BuyerPetDetailController bpc = loader.getController();
+		bpc.initData(petData);
 		mainPane.setCenter(root);
-
 	}
 
 }

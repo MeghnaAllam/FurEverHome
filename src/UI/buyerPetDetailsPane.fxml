@@ -6,8 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.BuyerPetDetailController">
    <children>
       <ImageView fitHeight="150.0" fitWidth="166.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" />
       <Label layoutX="98.0" layoutY="83.0" text="Pet Image Here" />
@@ -15,16 +14,16 @@
       <Label alignment="CENTER_RIGHT" layoutX="188.0" layoutY="94.0" prefHeight="26.0" prefWidth="74.0" text="Pet Category:" />
       <Label alignment="CENTER_RIGHT" layoutX="368.0" layoutY="45.0" prefHeight="26.0" prefWidth="74.0" text="Age:" />
       <Label alignment="CENTER_RIGHT" layoutX="368.0" layoutY="94.0" prefHeight="26.0" prefWidth="74.0" text="Breed:" />
-      <Label alignment="CENTER" layoutX="283.0" layoutY="45.0" prefHeight="26.0" prefWidth="74.0" text="Name i/p" />
-      <Label alignment="CENTER" layoutX="283.0" layoutY="94.0" prefHeight="26.0" prefWidth="74.0" text="Category i/p" />
-      <Label alignment="CENTER" layoutX="506.0" layoutY="45.0" prefHeight="26.0" prefWidth="74.0" text="Age i/p" />
-      <Label alignment="CENTER" layoutX="506.0" layoutY="95.0" prefHeight="26.0" prefWidth="74.0" text="Breed i/p" />
-      <Button layoutX="274.0" layoutY="211.0" mnemonicParsing="false" text="Adopt/Buy" />
+      <Label fx:id="nameLbl" alignment="CENTER" layoutX="283.0" layoutY="45.0" prefHeight="26.0" prefWidth="74.0" text="Name i/p" />
+      <Label fx:id="categoryLbl" alignment="CENTER" layoutX="283.0" layoutY="94.0" prefHeight="26.0" prefWidth="74.0" text="Category i/p" />
+      <Label fx:id="ageLbl" alignment="CENTER" layoutX="506.0" layoutY="45.0" prefHeight="26.0" prefWidth="74.0" text="Age i/p" />
+      <Label fx:id="breedLbl" alignment="CENTER" layoutX="506.0" layoutY="95.0" prefHeight="26.0" prefWidth="74.0" text="Breed i/p" />
+      <Button fx:id="adoptAndBuy" layoutX="274.0" layoutY="211.0" mnemonicParsing="false" text="Adopt/Buy" />
       <Label alignment="CENTER_RIGHT" layoutX="188.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Sex:" />
-      <Label alignment="CENTER" layoutX="273.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Sex i/p" />
-      <Label alignment="CENTER_RIGHT" layoutX="368.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Price:" />
-      <Label alignment="CENTER" layoutX="506.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Price i/p" />
-      <AnchorPane layoutX="84.0" layoutY="246.0" prefHeight="140.0" prefWidth="440.0">
+      <Label fx:id="sexLbl" alignment="CENTER" layoutX="273.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Sex i/p" />
+      <Label fx:id="price" alignment="CENTER_RIGHT" layoutX="368.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Price:" />
+      <Label fx:id="priceLbl" alignment="CENTER" layoutX="506.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Price i/p" />
+      <AnchorPane fx:id="messagePane" layoutX="84.0" layoutY="246.0" prefHeight="140.0" prefWidth="440.0">
          <children>
             <Label layoutX="32.0" layoutY="27.0" text="Message to Seller:" />
             <TextArea layoutX="149.0" layoutY="12.0" prefHeight="72.0" prefWidth="279.0" />
