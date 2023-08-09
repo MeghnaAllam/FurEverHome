@@ -168,6 +168,9 @@ public class FormController implements Initializable {
     @FXML
     private Button activityBtn;
     
+    @FXML
+    private Button pDEditBtn, pDDeleteBtn;
+    
 
     @FXML
     private TextField petBreedInput;
@@ -181,7 +184,21 @@ public class FormController implements Initializable {
     @FXML
 	public Button logoutBtn;
     
-
+    @FXML
+    private TextField pDPetCategory, pDPetName, pDPetBreed;
+    
+    @FXML
+    private TextField pDPetAge,pDPetSellerChoice, pDPetSellPriceField;
+    
+    @FXML
+    private Label pDPetSellPriceLbl;
+    
+    @FXML
+    private RadioButton PDPetFemale, pDPetMale;
+    
+    @FXML
+    private AnchorPane petDetailsPane;
+  
 
     @FXML
     private ListView<String> listview;   
@@ -229,13 +246,13 @@ public class FormController implements Initializable {
 	@FXML
 	private TableView<InterestedBuyerInfo> adTable;
 	@FXML
-	private TableColumn adBuyerFNameColumn;
+	private TableColumn<InterestedBuyerInfo, String> adBuyerFNameColumn;
 	@FXML
-	private TableColumn adBuyerLNameColumn;
+	private TableColumn<InterestedBuyerInfo, String> adBuyerLNameColumn;
 	@FXML
-	private TableColumn adMessageColumn;
+	private TableColumn<InterestedBuyerInfo, String> adMessageColumn;
 	@FXML
-	private TableColumn adStatusColumn;
+	private TableColumn<InterestedBuyerInfo, String> adStatusColumn;
 	
 	
 	@FXML
@@ -253,6 +270,7 @@ public class FormController implements Initializable {
 	public void initData(Object obj) {
 		showHome.setVisible(false);
 		sellerAdPane.setVisible(false);
+		petDetailsPane.setVisible(false);
 		this.seller = (Seller) obj;
 		try {
 			
@@ -390,18 +408,20 @@ System.out.println(sql);
 	
 	public void switchForm(ActionEvent event) throws SQLException {
 		if(event.getSource() == homeBtn ) {
-			
+			addPetsList = fetchPetDataList();
 			addPetsShowListTable();
 			showHome.setVisible(true);
 			addPetsPage.setVisible(false);
 			showActivity.setVisible(false);
 			sellerAdPane.setVisible(false);
+			petDetailsPane.setVisible(false);
 		}
 		else if(event.getSource() == addPetsBtn) {
 			showHome.setVisible(false);
 			addPetsPage.setVisible(true);
 			showActivity.setVisible(false);
 			sellerAdPane.setVisible(false);
+			petDetailsPane.setVisible(false);
 		}
 		
 		else if(event.getSource() == activityBtn) {
@@ -411,6 +431,7 @@ System.out.println(sql);
 			addPetsPage.setVisible(false);
 			showActivity.setVisible(true);
 			sellerAdPane.setVisible(false);
+			petDetailsPane.setVisible(false);
 		}
 	}
 	
@@ -437,6 +458,7 @@ System.out.println(sql);
 				    			addPetsPage.setVisible(false);
 				    			showActivity.setVisible(false);
 				    			sellerAdPane.setVisible(true);
+				    			petDetailsPane.setVisible(false);
 				    			
 				    			if(interestedBuyersMap.containsKey(selectedPet)) {
 				    				setActivityPetDetail(selectedPet);
@@ -609,9 +631,132 @@ System.out.println(sql);
 	petAgetb.setCellValueFactory(new PropertyValueFactory<>("age"));
 	petSextb.setCellValueFactory(new PropertyValueFactory<>("sex"));
 	showHome.setItems(addPetsList);
+	
+	showHome.setRowFactory(tv -> {
+	    TableRow<PetData> row = new TableRow<PetData>();
+	    row.setOnMouseClicked(event -> {
+	        if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
+	            PetData selectedPet = row.getItem();
+	            try {
+	            	showHome.setVisible(false);
+	    			addPetsPage.setVisible(false);
+	    			showActivity.setVisible(false);
+	    			sellerAdPane.setVisible(false);
+	    			petDetailsPane.setVisible(true);
+	    			
+	    			setSelectedPetDetails(selectedPet);
+	    			
+	    			pDEditBtn.setOnAction(btnEvent -> {
+	    					String breed = pDPetBreed.getText();
+	    					String petName = pDPetName.getText();
+	    					int age = Integer.parseInt(pDPetAge.getText());
+	    					int price = (pDPetSellPriceField.getText() != null && !pDPetSellPriceField.getText().equals(""))?Integer.parseInt(pDPetSellPriceField.getText()): 0;
+	    					selectedPet.setAge(age);
+	    					selectedPet.setBreed(breed);
+	    					selectedPet.setPetName(petName);
+	    					if (price > 0) {
+	    						selectedPet.setPrice(price);
+	    					}
+	    					if(pDPetMale.isSelected()) {
+	    						selectedPet.setSex("Male");
+	    					} else if (PDPetFemale.isSelected()) {
+	    						selectedPet.setSex("Female");
+	    					}
+		        			updatePetDetails(selectedPet);
+		        		});
+	    			
+	    			pDDeleteBtn.setOnAction(btnEvent -> {
+	    				PetService ps = new PetService();
+	    				try {
+							ps.deletePetDetails(selectedPet);
+							Alert alert = new Alert(AlertType.INFORMATION);
+							alert.setTitle("Success Message");
+							alert.setHeaderText(null);
+							alert.setContentText("Pet Info Deleted Successfully");
+							
+							Optional<ButtonType> option = alert.showAndWait();
+							
+							
+							addPetsList = fetchPetDataList();
+			    			addPetsShowListTable();
+			    			
+							showHome.setVisible(true);
+			    			addPetsPage.setVisible(false);
+			    			showActivity.setVisible(false);
+			    			sellerAdPane.setVisible(false);
+			    			petDetailsPane.setVisible(false);
+			    			
+			    			
+							
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	    			});
+		        }
+		        catch(Exception e) {
+		       
+		        } 
+	        }
+	    });
+	    return row ;
+	});
+	
 }
 	
-	
+	private void updatePetDetails(PetData selectedPet) {
+		// TODO Auto-generated method stub
+		PetService ps = new PetService();
+		try {
+			ps.updatePetDetails(selectedPet);
+		} catch (NumberFormatException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Success Message");
+		alert.setHeaderText(null);
+		alert.setContentText("Pet Info Updated Successfully");
+		
+		Optional<ButtonType> option = alert.showAndWait();
+		
+		setSelectedPetDetails(selectedPet);
+	}
+
+	private void setSelectedPetDetails(PetData selectedPet) {
+		// TODO Auto-generated method stub
+		ToggleGroup toggleGroup = new ToggleGroup();
+		PDPetFemale.setToggleGroup(toggleGroup);
+		pDPetMale.setToggleGroup(toggleGroup);
+		
+		if(selectedPet.getSex().equals("Male")) {
+			pDPetMale.setSelected(true);
+		} else if (selectedPet.getSex().equals("Female")) {
+			PDPetFemale.setSelected(true);
+		} else {
+			
+		}
+		
+		pDPetCategory.setText(selectedPet.getPetCategory());
+		pDPetCategory.setDisable(true);
+		pDPetName.setText(selectedPet.getPetName());
+		pDPetBreed.setText(selectedPet.getBreed());
+		pDPetAge.setText(selectedPet.getAge()+"");
+		pDPetSellerChoice.setText(selectedPet.getChoiceOfSelection());
+		pDPetSellerChoice.setDisable(true);
+		
+		if(selectedPet.getChoiceOfSelection().equals("Sell")) {
+			pDPetSellPriceLbl.setVisible(true);
+			pDPetSellPriceField.setVisible(true);
+			pDPetSellPriceField.setText(selectedPet.getPrice()+ "");
+		} else {
+			pDPetSellPriceLbl.setVisible(false);
+			pDPetSellPriceField.setVisible(false);
+		}
+		
+	}
+
 	private double x= 0;
 	private double y=0;
 	
@@ -626,33 +771,6 @@ System.out.println(sql);
 		Optional<ButtonType> option = alert.showAndWait();
 		
 		if(option.get().equals(ButtonType.OK)) {
-			
-//			homePage.getScene().getWindow().hide();
-//			
-//			Parent root = FXMLLoader.load(getClass().getResource("/UI/register.fxml"));
-//			Stage stage = new Stage();
-//			Scene scene = new Scene(root);
-//			
-//			root.setOnMousePressed((MouseEvent event) -> {
-//				x= event.getSceneX();
-//				y= event.getSceneY();
-//			});
-//			
-//			root.setOnMouseDragged((MouseEvent event) -> {
-//				stage.setX(event.getSceneX() -x);
-//				stage.setY(event.getSceneY() -y);
-//				
-//				stage.setOpacity(.8);
-//			});
-//			
-//			root.setOnMouseReleased((MouseEvent event) -> {
-//				stage.setOpacity(1);
-//			});
-//			
-//			stage.initStyle(StageStyle.TRANSPARENT);
-//			
-//			stage.setScene(scene);
-//			stage.show();
 			
 			Main m = new Main();
 			m.changeScene("login.fxml", null);
@@ -725,6 +843,8 @@ System.out.println(sql);
 
 	            String sex = resultSet.getString("sex");
 	            String breed = resultSet.getString("breed");
+	            int petId = Integer.parseInt(resultSet.getString("id"));
+	            int sellerId = Integer.parseInt(resultSet.getString("sellerID"));
 	            
 //	            List<File> allPhotoItems = new ArrayList<>();
 //	            while (resultSet.next()) {
@@ -739,7 +859,9 @@ System.out.println(sql);
 //	            for (File file : allPhotoItems) {
 //	                System.out.println(file.getAbsolutePath());
 //	            }
-	           PetData petDataInfo = new PetData(petName,age,breed,price,sellerChoice,petCategory,sex,null);            
+	           PetData petDataInfo = new PetData(petName,age,breed,price,sellerChoice,petCategory,sex,null); 
+	           petDataInfo.setPetId(petId);
+	           petDataInfo.setSellerId(sellerId);
 
 	          //  boolean empStatus = dbStatus.equals("0") ? false : true;
 

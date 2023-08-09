@@ -123,5 +123,22 @@ public class PetService {
 		resultSet = DbConnection.selectQuery(query);
 		return resultSet;
 	}
+	
+	public void updatePetDetails(PetData pd)throws NumberFormatException, SQLException {
+		String query = "update petinfo set petName = '" + pd.getPetName() + "', age = " + pd.getAge() +
+				", breed = '" + pd.getBreed() + "', sex = '" + pd.getSex() + "'";
+		if(pd.getPrice() > 0) {
+			query += ", price = " + pd.getPrice() + ";";
+		}
+		query = query + " where id = " + pd.getPetId() + ";";
+		System.out.println(query);
+		
+		DbConnection.query(query);
+	}
+	
+	public void deletePetDetails(PetData pd) throws SQLException {
+		String query = "Delete from petinfo where id = " + pd.getPetId() + ";";
+		DbConnection.query(query);
+	}
 
 }
