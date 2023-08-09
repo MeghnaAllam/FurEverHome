@@ -1,5 +1,10 @@
 package application;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 
 public class PetData {
@@ -9,14 +14,12 @@ public class PetData {
 	private String petName;
 	private String sex;
 	private Integer price;
+	private List<File> image;
 	private String choiceOfSelection;
 	private String breed;
-	private Button viewButton;
-	private Button deleteButton;
 	
 	
-	public PetData(String petName,Integer age, String breed, Integer price, String choiceOfSelection, String petCategory, String sex) {
-		//this.listingId = listingId;
+	public PetData(String petName,Integer age, String breed, Integer price, String choiceOfSelection, String petCategory, String sex, List<File> allPhotoItems) {
 		this.age = age;
 		this.choiceOfSelection = choiceOfSelection;
 		this.price = price;
@@ -24,34 +27,18 @@ public class PetData {
 		this.petName = petName;
 		this.sex = sex;
 		this.breed = breed;
-		this.viewButton = new Button("View More");
-		this.deleteButton = new Button("Delete");
+		this.image = allPhotoItems;
 	}
 
 
-
-	public Button getDeleteButton() {
-		return deleteButton;
+	public List<File> getImage() {
+		return image;
 	}
 
 
-
-	public void setDeleteButton(Button deleteButton) {
-		this.deleteButton = deleteButton;
+	public void setImage(List<File> image) {
+		this.image = image;
 	}
-
-
-
-	public Button getViewButton() {
-		return viewButton;
-	}
-
-
-
-	public void setViewButton(Button button) {
-		this.viewButton = button;
-	}
-
 
 
 	public Integer getPrice() {
