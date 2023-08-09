@@ -28,7 +28,7 @@
                   <TableColumn fx:id="petSextb" minWidth="0.0" prefWidth="92.66668701171875" text="Sex" />
               </columns>
             </TableView>
-            <AnchorPane fx:id="addPetsPage" layoutX="1.0" layoutY="41.0" prefHeight="494.0" prefWidth="654.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="41.0">
+            <AnchorPane fx:id="addPetsPage" layoutX="1.0" layoutY="41.0" prefHeight="494.0" prefWidth="654.0" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="41.0">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="258.0" layoutY="12.0" prefHeight="25.0" prefWidth="124.0" text="Add Pets">
                      <font>
@@ -131,23 +131,38 @@
             </AnchorPane>
             <AnchorPane fx:id="showActivity" layoutX="1.0" layoutY="50.0" prefHeight="486.0" prefWidth="654.0" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="50.0">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="272.0" layoutY="14.0" prefHeight="35.0" prefWidth="133.0" text="My Activity">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <ImageView fitHeight="29.0" fitWidth="36.0" layoutX="230.0" layoutY="17.0">
-                     <image>
-                        <Image url="@../../../../../Desktop/activity%20icon.png" />
-                     </image>
-                  </ImageView>
-                  <TableView fx:id="activityTable" layoutX="6.0" layoutY="237.0" prefHeight="249.0" prefWidth="641.0">
+                  <TableView fx:id="activityTable" layoutX="6.0" prefHeight="486.0" prefWidth="642.0">
                     <columns>
-                      <TableColumn fx:id="buyerName" prefWidth="139.33334350585938" text="Buyer Name" />
-                      <TableColumn fx:id="message" prefWidth="376.6666259765625" text="Message from Buyer" />
-                        <TableColumn fx:id="status" prefWidth="124.0" text="Status" />
+                      <TableColumn fx:id="activityPetCategoryColumn" prefWidth="200.00000619888306" text="Pet Category" />
+                      <TableColumn fx:id="activityPetNameColumn" prefWidth="174.39996337890625" text="Pet Name" />
+                        <TableColumn fx:id="activityPetBreedColumn" prefWidth="121.5999755859375" text="Breed" />
+                        <TableColumn fx:id="activityPetAgeColumn" prefWidth="48.800018310546875" text="Age" />
+                        <TableColumn fx:id="activityPetSexColumn" prefWidth="96.0" text="Sex" />
                     </columns>
                   </TableView>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="sellerAdPane" layoutX="-1.0" layoutY="41.0" prefHeight="502.0" prefWidth="662.0">
+               <children>
+                  <Label fx:id="adPetCategoryLbl" layoutX="55.0" layoutY="54.0" text="Pet Category:" />
+                  <Label fx:id="adAgeLbl" layoutX="495.0" layoutY="55.0" text="Age:" />
+                  <Label fx:id="adPetNameLbl" layoutX="281.0" layoutY="55.0" text="Pet Name:" />
+                  <Label fx:id="adPetNameInput" layoutX="357.0" layoutY="54.0" text="Pet Name input" />
+                  <Label fx:id="adPetCategoryInput" layoutX="132.0" layoutY="54.0" text="PetCategory input" />
+                  <Label fx:id="adAgeInput" layoutX="541.0" layoutY="55.0" text="Age input" />
+                  <Label fx:id="adBreedLbl" layoutX="55.0" layoutY="89.0" text="Breed:" />
+                  <Label fx:id="adBreedInput" layoutX="126.0" layoutY="89.0" text="Breed input" />
+                  <Label fx:id="adSexLbl" layoutX="493.0" layoutY="89.0" text="Sex:" />
+                  <Label fx:id="adSexInput" layoutX="553.0" layoutY="89.0" text="Sex input" />
+                  <TableView fx:id="adTable" layoutX="5.0" layoutY="165.0" prefHeight="266.0" prefWidth="654.0">
+                    <columns>
+                      <TableColumn fx:id="adBuyerFNameColumn" prefWidth="172.7999939918518" text="Buyer First Name" />
+                      <TableColumn fx:id="adBuyerLNameColumn" prefWidth="170.4000244140625" text="Buyer Last Name" />
+                        <TableColumn fx:id="adMessageColumn" minWidth="0.0" prefWidth="202.39993286132812" text="Message" />
+                        <TableColumn fx:id="adStatusColumn" minWidth="5.60009765625" prefWidth="107.20004882812498" text="Status" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="adApproveBtn" layoutX="305.0" layoutY="446.0" mnemonicParsing="false" text="Approve" />
                </children>
             </AnchorPane>
             <Button fx:id="addPetsBtn" layoutX="390.0" layoutY="10.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="11.0" prefWidth="83.0" text="Add Pets" />

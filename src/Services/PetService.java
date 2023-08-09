@@ -88,13 +88,36 @@ public class PetService {
 				int bId = Integer.parseInt(resultSet.getString("buyerId"));
 				String msg = resultSet.getString("buyerMessage");
 				String status = resultSet.getString("status");
-				
 				pb = new PetBuyer(id, bId, msg, status);
 				return pb;
 			}
 		}
 		return pb;
 		
+	}
+	
+	public ResultSet getPetAndBuyerInfo(int sellerId) {
+		ResultSet resultSet = null;
+		String query = "SELECT pb.id,\r\n"
+				+ "       pb.buyerId,\r\n"
+				+ "       pb.status,\r\n"
+				+ "       pb.buyerMessage,\r\n"
+				+ "       pi.petCategory,\r\n"
+				+ "       pi.petName,\r\n"
+				+ "       pi.age,\r\n"
+				+ "       pi.breed,\r\n"
+				+ "       pi.sellerChoice,\r\n"
+				+ "       pi.sellerId,\r\n"
+				+ "       pi.sex,\r\n"
+				+ "       pi.price,\r\n"
+				+ "       b.firstName,\r\n"
+				+ "       b.lastName\r\n"
+				+ "FROM petBuyer pb\r\n"
+				+ "JOIN petinfo pi ON pb.id = pi.id\r\n"
+				+ "JOIN buyer b ON pb.buyerId = b.buyerId\r\n"
+				+ "WHERE pb.status IN ('Pending', 'Rejected', 'Approveds') AND pi.sellerId = "+sellerId+";";
+		resultSet = DbConnection.selectQuery(query);
+		return resultSet;
 	}
 
 }

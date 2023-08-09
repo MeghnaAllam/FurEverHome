@@ -6,43 +6,18 @@ public class ActivityData {
 private Integer buyerId;
 private String message;
 private String activityStatus;
-private String buyerFirstName;
-private String buyerLastName;
 	
 	
-	public ActivityData(Integer petBuyerId, Integer buyerId, String message, String activityStatus, String buyerFirstName, String buyerLastName) {
+	public ActivityData(Integer petBuyerId, Integer buyerId, String message, String activityStatus) {
       
 		this.petBuyerId = petBuyerId;
 		this.buyerId = buyerId;
 		this.message = message;
 		this.activityStatus = activityStatus;
-		this.buyerFirstName = buyerFirstName;
-		this.buyerLastName = buyerLastName;
 	}
-
-
-	public String getBuyerLastName() {
-		return buyerLastName;
-	}
-
-
-	public void setBuyerLastName(String buyerLastName) {
-		this.buyerLastName = buyerLastName;
-	}
-
 
 	public Integer getPetBuyerId() {
 		return petBuyerId;
-	}
-
-
-	public String getBuyerName() {
-		return buyerFirstName;
-	}
-
-
-	public void setBuyerName(String buyerName) {
-		this.buyerFirstName = buyerFirstName;
 	}
 
 
