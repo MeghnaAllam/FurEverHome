@@ -18,8 +18,8 @@ import Model.Buyer;
 import Model.InterestedBuyerInfo;
 import Model.PetData;
 import Model.Seller;
-import Services.BuyerService;
-import Services.PetService;
+import services.BuyerService;
+import services.PetService;
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -317,8 +317,8 @@ public class FormController implements Initializable {
 				}
 				String selectedPetCategory=null;
 				RadioButton rb = (RadioButton)PetCategory.getSelectedToggle(); 
-				if (selectedRadioButton != null) {
-					selectedPetCategory = selectedRadioButton.getText();
+				if (rb != null) {
+					selectedPetCategory = rb.getText();
 				}
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Information Message");
@@ -329,8 +329,7 @@ public class FormController implements Initializable {
 				//clears the form
 				addPetsClear();
 				
-				//show in the table
-				addPetsShowListTable();
+				
 			
 
 			PetData pd = new PetData(petName,petAge,breed,price, choiceOfSelection,selectedPetCategory,selectedpetSex,allPhotoItems);
@@ -341,7 +340,9 @@ String sql = "INSERT INTO `petinfo`(`petCategory`,`petName`,`age`,`breed`,`selle
 			+ pd.getChoiceOfSelection()+ "', "+seller.getSellerId()+" ,'" + pd.getSex()+"', '" + pd.getPrice()+"','" + pd.getImage()+"')";
 System.out.println(sql);
         DbConnection.query(sql);   
-
+        
+      //show in the table
+		addPetsShowListTable();
 		}	
 		}
 
@@ -603,6 +604,7 @@ System.out.println(sql);
 	
 	private ObservableList<PetData> addPetsList;
     public void addPetsShowListTable() throws SQLException {
+    	addPetsList = fetchPetDataList();
 	petCategorytb.setCellValueFactory(new PropertyValueFactory<>("petCategory"));
 	petNametb.setCellValueFactory(new PropertyValueFactory<>("petName"));
 	petBreedtb.setCellValueFactory(new PropertyValueFactory<>("breed"));
