@@ -50,29 +50,6 @@ public class PetService {
 		}
 		return petDataList;
 	}
-//	
-//	  public List<File> fetchImageDetails(ResultSet resultSet) throws SQLException {
-//		  List<File> allPhotoItems=new ArrayList<>();
-//		  while(resultSet.next()) {
-//			  int petId = Integer.parseInt(resultSet.getString("id"));
-//				Integer age = Integer.parseInt(resultSet.getString("age"));
-//				String petCategory = resultSet.getString("petCategory");
-//				String petName = resultSet.getString("petName");
-//				String sex = resultSet.getString("sex");
-//				Integer price = (resultSet.getString("price") != null)?( Integer.parseInt(resultSet.getString("price"))): 0;
-//				String choiceOfSelection = resultSet.getString("sellerChoice");
-//				String breed = resultSet.getString("breed");
-//				int sellerId = Integer.parseInt(resultSet.getString("sellerId"));
-//				 
-//	      String filePath = resultSet.getString("pi.image");
-//	      File file = new File(filePath);
-//	      System.out.println(file);
-//	      allPhotoItems.add(file);
-//		  
-//		  PetData pd = new PetData(petName, age, breed, price, choiceOfSelection, petCategory, sex, null);
-//		  }
-//		  return allPhotoItems;
-//	  }
 
 	public void addBuyerInterest(String msg, int petId, int buyerId) {
 		String sql = "INSERT INTO `petbuyer`(`id`, `buyerId`, `status`, `buyerMessage`)"

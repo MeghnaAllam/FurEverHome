@@ -1,6 +1,8 @@
 package Controllers;
 
+import java.io.File;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import Model.Buyer;
@@ -61,7 +63,7 @@ public class BuyerPetDetailController {
 	private AnchorPane messagePane;
 	
     @FXML
-    private ImageView showImage;
+    private List<File> showImage;
 	
 	@FXML
 	private TextArea buyerMessage;
@@ -163,7 +165,6 @@ public class BuyerPetDetailController {
 	public void getPetBuyerDetails() {
 		PetService ps = new PetService();
 		try {
-			//showImage =	ps.fetchPhoto(buyer.getBuyerId());
 			petBuyer = ps.retrievePetBuyerData(petData.getPetId(), buyer.getBuyerId());
 			System.out.println(petBuyer);
 		} catch (NumberFormatException e) {

@@ -64,14 +64,13 @@ public class ForgotPasswordController {
 				m1.changeScene("login.fxml", null);					
 			}
 //				
-				else {
 					Integer bfp = forgotP.updateBuyerPassword();
-				if (bfp == 2) {
+				if (bfp!=null) {
 					Main m2 = new Main();
 					m2.changeScene("login.fxml", null);
 				}
 				}
-			}
+			
 			
 			catch (SQLException e) {
 				// TODO Auto-generated catch block

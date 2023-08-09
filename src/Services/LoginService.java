@@ -53,6 +53,7 @@ public class LoginService {
 		String lName = "";
 		String state = "";
 		String city = "";
+		
 		String query = "select * from buyer where emailId ='" + emailId + "'";
 		ResultSet resultSet = DbConnection.selectQuery(query);
 		while (resultSet.next()) {
@@ -107,10 +108,10 @@ public class LoginService {
 	System.out.println(squery);
 		Integer resultSet = DbConnection.updateQuery(squery);
 		if(resultSet!=null) {
-			return 2;
+			return 1;
 		}
 		else {
-		return 0;
+		return -1;
 		}
 		
 		
