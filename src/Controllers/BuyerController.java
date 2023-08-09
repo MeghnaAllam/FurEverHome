@@ -91,6 +91,7 @@ public class BuyerController implements Initializable {
 	
 	public void onHome() throws IOException {
 		mainPane.setCenter(homePane);
+		getAllPetDetails();
 		fillHomePetTable();
 	}
 	
@@ -151,7 +152,7 @@ public class BuyerController implements Initializable {
 		if(buyer != null) {
 			try {
 				PetService ps = new PetService();
-				petDetailsList = ps.fetchBuyerPetDashboardInfo();
+				petDetailsList = ps.fetchBuyerPetDashboardInfo(buyer.getBuyerId());
 			}catch(SQLException e) {
 				e.printStackTrace();
 			}

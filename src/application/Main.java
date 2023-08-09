@@ -3,7 +3,9 @@ package application;
 import java.io.IOException;
 
 import Controllers.BuyerController;
+import Controllers.FormController;
 import Model.Buyer;
+import Model.Seller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -40,6 +42,9 @@ public class Main extends Application {
 			if (o instanceof Buyer) {
 				BuyerController bc = loader.getController();
 				bc.initData(o);
+			}else if(o instanceof Seller) {
+				FormController fc = loader.getController();
+				fc.initData(o);
 			}
 			stage.getScene().setRoot(root);
 			stage.show();

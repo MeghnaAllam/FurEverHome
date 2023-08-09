@@ -54,6 +54,7 @@ public class RegisterController {
 			String type = Constants.SELLER;
 			Seller seller = new Seller(firstName, lastName, emailID, passwordField, stateField, cityField, type);
 			SellerService ss = new SellerService(seller);
+			clearAllFields();
 			try{
 				ss.addSellerToDb();
 			}catch(Exception e) {
@@ -68,10 +69,24 @@ public class RegisterController {
 			BuyerService bs = new BuyerService(buyer);
 			try{
 				bs.addBuyerToDb();
+				clearAllFields();
 			}catch(Exception e) {
 				System.out.println(e);
 			}
 		}
+		
+	}
+	
+	public void clearAllFields() {
+		fName.setText("");
+		lName.setText("");
+		emailId.setText("");
+		password.setText("");
+		state.setText("");
+		city.setText("");
+		cPassword.setText("");
+		buyerType.setSelected(false);
+		sellerType.setSelected(false);
 	}
 	
 	public void onLogin() {

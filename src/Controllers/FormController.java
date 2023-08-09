@@ -7,15 +7,24 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Model.ActivityData;
+import Model.Buyer;
+import Model.InterestedBuyerInfo;
 import Model.PetData;
+import Model.Seller;
+import Services.BuyerService;
+import Services.PetService;
+import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,18 +42,21 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utilities.Constants;
 import utilities.DbConnection;
 
 public class FormController implements Initializable {
@@ -133,7 +145,7 @@ public class FormController implements Initializable {
     private Label uploadPicturesLbl;
     
     @FXML
-    private TableView<ActivityData> activityTbl;
+    private TableView<PetData> activityTable;
  
     @FXML
     private TableColumn<ActivityData, String> buyerName;
@@ -177,8 +189,82 @@ public class FormController implements Initializable {
 	@FXML
 	private ChoiceBox<String> myChoiceBox;
 	
+	@FXML
+	private TableColumn activityPetSexColumn;
+	
+	@FXML
+	private TableColumn activityPetCategoryColumn;
+	@FXML
+	private TableColumn activityPetNameColumn;
+	@FXML
+	private TableColumn activityPetBreedColumn;
+	@FXML
+	private TableColumn activityPetAgeColumn;
+	
+	@FXML
+	private Label adPetCategoryLbl;
+	
+	@FXML
+	private Label adPetCategoryInput;
+	@FXML
+	private Label adPetNameLbl;
+	@FXML
+	private Label adPetNameInput;
+	@FXML
+	private Label adAgeLbl;
+	@FXML
+	private Label adAgeInput;
+	@FXML
+	private Label adSexLbl;
+	@FXML
+	private Label adSexInput;
+	@FXML
+	private Label adBreedLbl;
+	@FXML
+	private Label adBreedInput;
+	
+	@FXML
+	private AnchorPane sellerAdPane;
+	
+	@FXML
+	private TableView<InterestedBuyerInfo> adTable;
+	@FXML
+	private TableColumn adBuyerFNameColumn;
+	@FXML
+	private TableColumn adBuyerLNameColumn;
+	@FXML
+	private TableColumn adMessageColumn;
+	@FXML
+	private TableColumn adStatusColumn;
+	
+	
+	@FXML
+	private Button adApproveBtn;
+	
+	
+	private ObservableList<PetData> sellerPetActivityList;
+	
+	private HashMap<PetData, ArrayList<InterestedBuyerInfo>> interestedBuyersMap;
+	
 	private String[] userOptions = {"Donate", "Sell"};
 	
+	private Seller seller;
+		
+	public void initData(Object obj) {
+		showHome.setVisible(false);
+		sellerAdPane.setVisible(false);
+		this.seller = (Seller) obj;
+		try {
+			
+			addPetsList = fetchPetDataList();
+			addPetsShowListTable();
+			showHome.setVisible(true);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(seller.getSellerId());
+	}
 	
 	public void onSubmitbtn(ActionEvent event) {
 		
@@ -252,7 +338,7 @@ public class FormController implements Initializable {
 String sql = "INSERT INTO `petinfo`(`petCategory`,`petName`,`age`,`breed`,`sellerChoice`,`sellerID`,`sex`,`price`, `image`) "
 
 			        + "VALUES ('" + pd.getPetCategory()+ "','" + pd.getPetName()+ "','" + pd.getAge()+ "','" + pd.getBreed()+ "','" 
-			+ pd.getChoiceOfSelection()+ "', '10' ,'" + pd.getSex()+"', '" + pd.getPrice()+"','" + pd.getImage()+"')";
+			+ pd.getChoiceOfSelection()+ "', "+seller.getSellerId()+" ,'" + pd.getSex()+"', '" + pd.getPrice()+"','" + pd.getImage()+"')";
 System.out.println(sql);
         DbConnection.query(sql);   
 
@@ -309,24 +395,214 @@ System.out.println(sql);
 			showHome.setVisible(true);
 			addPetsPage.setVisible(false);
 			showActivity.setVisible(false);
-		
+			sellerAdPane.setVisible(false);
 		}
 		else if(event.getSource() == addPetsBtn) {
 			showHome.setVisible(false);
 			addPetsPage.setVisible(true);
 			showActivity.setVisible(false);
+			sellerAdPane.setVisible(false);
 		}
 		
 		else if(event.getSource() == activityBtn) {
+			fetchPetAndBuyerInfo();
+			fillSellerActivityTable();
 			showHome.setVisible(false);
 			addPetsPage.setVisible(false);
 			showActivity.setVisible(true);
+			sellerAdPane.setVisible(false);
 		}
 	}
 	
+	private void fillSellerActivityTable() {
+		// TODO Auto-generated method stub
+		if(sellerPetActivityList != null && sellerPetActivityList.size() > 0) {
+			activityPetCategoryColumn.setCellValueFactory(new PropertyValueFactory<PetData, String>("petCategory"));
+			activityPetNameColumn.setCellValueFactory(new PropertyValueFactory<PetData, String>("petName"));
+			activityPetBreedColumn.setCellValueFactory(new PropertyValueFactory<PetData, String>("breed"));
+			activityPetAgeColumn.setCellValueFactory(new PropertyValueFactory<PetData, String>("age"));
+			activityPetSexColumn.setCellValueFactory(new PropertyValueFactory<PetData, String>("sex"));
+			
+			
+				activityTable.setItems(sellerPetActivityList);
+				
+				activityTable.setRowFactory(tv -> {
+				    TableRow<PetData> row = new TableRow<PetData>();
+				    row.setOnMouseClicked(event -> {
+				        if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
+				            PetData selectedPet = row.getItem();
+				            try {
+//					        	loadPetDetailsPage(selectedPet);
+				            	showHome.setVisible(false);
+				    			addPetsPage.setVisible(false);
+				    			showActivity.setVisible(false);
+				    			sellerAdPane.setVisible(true);
+				    			
+				    			if(interestedBuyersMap.containsKey(selectedPet)) {
+				    				setActivityPetDetail(selectedPet);
+				    				ArrayList<InterestedBuyerInfo> buyer = interestedBuyersMap.get(selectedPet);
+				    				if(buyer != null && buyer.size() > 0) {
+				    					boolean allPending = true;
+				    					for(InterestedBuyerInfo b : buyer){
+				    						if(b.getStatus() == Constants.APPROVED || b.getStatus() == Constants.REJECTED) {
+				    							allPending = false;
+				    							break;
+				    						}
+				    					}
+				    					if(!allPending) {
+				    						adApproveBtn.setVisible(false);
+				    					}else {
+				    						adApproveBtn.setVisible(true);
+				    					}
+				    					ObservableList<InterestedBuyerInfo> ibiObservableList = FXCollections.observableArrayList(buyer);
+				    					filladTable(ibiObservableList, selectedPet.getPetId());
+				    				}
+				    			}
+					        }
+					        catch(Exception e) {
+					       
+					        } 
+				        }
+				    });
+				    return row ;
+				});
+			
+		}
+	}
+
+	private void filladTable(ObservableList<InterestedBuyerInfo> ibiObservableList, int petId) {
+		// TODO Auto-generated method stub
+		adTable.refresh();
+		adBuyerFNameColumn.setCellValueFactory(new PropertyValueFactory<InterestedBuyerInfo, String>("buyerFName"));
+		adBuyerLNameColumn.setCellValueFactory(new PropertyValueFactory<InterestedBuyerInfo, String>("buyerLName"));
+		adMessageColumn.setCellValueFactory(new PropertyValueFactory<InterestedBuyerInfo, String>("msg"));
+		adStatusColumn.setCellValueFactory(new PropertyValueFactory<InterestedBuyerInfo, String>("status"));
+		adTable.setItems(ibiObservableList);
+		
+		adTable.setRowFactory(tv -> {
+		    TableRow<InterestedBuyerInfo> row = new TableRow<InterestedBuyerInfo>();
+		    row.setOnMouseClicked(event -> {
+		        if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
+		        	InterestedBuyerInfo selectedBuyerRow = row.getItem();
+		          	adApproveBtn.setOnAction(btnEvent -> {
+		        		ArrayList<Integer> ibiRejectArr = new ArrayList<Integer>();
+		        		  for(InterestedBuyerInfo ibi: ibiObservableList) {
+		        			  if (ibi.getBuyerId() == selectedBuyerRow.getBuyerId()) {
+		        				  continue;
+		        			  } else {
+		        				  ibiRejectArr.add(ibi.getBuyerId());
+		        			  }
+		        		  }
+		        		  System.out.println("petId inside button click: " + petId);
+		        		  ArrayList<Integer> approveArr = new ArrayList<Integer>();
+		        		  approveArr.add(selectedBuyerRow.getBuyerId());
+				        	setApproveStatus(approveArr, petId);
+				        	setRejectStatus(ibiRejectArr, petId);
+				        	
+				        	Alert alert = new Alert(AlertType.INFORMATION);
+							alert.setTitle("Information Message");
+							alert.setHeaderText(null);
+							alert.setContentText("Approved a buyer");
+							alert.showAndWait();
+							
+							  for(InterestedBuyerInfo ibi: ibiObservableList) {
+			        			  if (ibi.getBuyerId() == selectedBuyerRow.getBuyerId()) {
+			        				  ibi.setStatus(Constants.APPROVED);
+			        			  } else {
+			        				  ibi.setStatus(Constants.REJECTED);
+			        			  }
+			        		  }
+							  adTable.setItems(ibiObservableList);
+							  adApproveBtn.setVisible(false);
+		        		});
+
+		        	}
+		        });
+		    return row;
+		});
+	}
+	
+	private void setApproveStatus(ArrayList<Integer> asList, int petId) {
+		// TODO Auto-generated method stub
+		BuyerService bs = new BuyerService();
+		bs.setStatus(asList, Constants.APPROVED, petId);
+		
+		
+	}
+
+	private void setRejectStatus(ArrayList<Integer> ibiRejectArr, int petId) {
+		// TODO Auto-generated method stub 
+		BuyerService bs = new BuyerService();
+		bs.setStatus(ibiRejectArr, Constants.REJECTED, petId);
+		
+	}
+
+ 
+
+	private void setActivityPetDetail(PetData selectedPet) {
+		// TODO Auto-generated method stub
+		
+		adPetCategoryInput.setText(selectedPet.getPetCategory());
+		adPetNameInput.setText(selectedPet.getPetName());
+		adAgeInput.setText(selectedPet.getAge()+"");
+		adSexInput.setText(selectedPet.getSex());
+		adBreedInput.setText(selectedPet.getBreed());
+	}
+
+	private void fetchPetAndBuyerInfo() throws SQLException {
+		PetService ps = new PetService();
+		ResultSet resultSet = ps.getPetAndBuyerInfo(seller.getSellerId());
+		if (resultSet != null) {
+			sellerPetActivityList = FXCollections.observableArrayList(); 
+			interestedBuyersMap = new HashMap<PetData, ArrayList<InterestedBuyerInfo>>();
+			while(resultSet.next()) {
+				int petId = Integer.parseInt(resultSet.getString("id"));
+				Integer age = Integer.parseInt(resultSet.getString("age"));
+				String petCategory = resultSet.getString("petCategory");
+				String petName = resultSet.getString("petName");
+				String sex = resultSet.getString("sex");
+				Integer price = (resultSet.getString("price") != null)?( Integer.parseInt(resultSet.getString("price"))): 0;
+				String choiceOfSelection = resultSet.getString("sellerChoice");
+				String breed = resultSet.getString("breed");
+				int sellerId = Integer.parseInt(resultSet.getString("sellerId"));
+				PetData pd = new PetData(petName, age, breed, price, choiceOfSelection, petCategory, sex, null);
+				pd.setPetId(petId);
+				pd.setSellerId(sellerId);
+				PetData alreadyAddedPetData;
+				int buyerId = Integer.parseInt(resultSet.getString("buyerId"));
+				String buyerFName = resultSet.getString("firstName");
+				String buyerLastName = resultSet.getString("lastName");
+				String msg = resultSet.getString("buyerMessage");
+				String status = resultSet.getString("status");
+				InterestedBuyerInfo ibi = new InterestedBuyerInfo(buyerId, buyerFName, buyerLastName, status, msg);
+				ArrayList<InterestedBuyerInfo> buyer;
+				if(searchPetData(pd) != null) {
+					alreadyAddedPetData = searchPetData(pd);
+					buyer = interestedBuyersMap.get(alreadyAddedPetData);
+					buyer.add(ibi);
+				} else {
+					sellerPetActivityList.add(pd);
+					buyer = new ArrayList<InterestedBuyerInfo>();
+					buyer.add(ibi);
+					interestedBuyersMap.put(pd, buyer);
+				}
+			}
+		}
+	}
+	
+	private PetData searchPetData(PetData petData ) {
+		if(sellerPetActivityList != null && sellerPetActivityList.size()>0) {
+			for(PetData pd : sellerPetActivityList) {
+		        if(pd.getPetId()== petData.getPetId()) {
+		            return pd;
+		        }
+		    }
+		}
+		return null;
+	}
+	
 	private ObservableList<PetData> addPetsList;
-public void addPetsShowListTable() throws SQLException {
-	addPetsList = fetchPetDataList();
+    public void addPetsShowListTable() throws SQLException {
 	petCategorytb.setCellValueFactory(new PropertyValueFactory<>("petCategory"));
 	petNametb.setCellValueFactory(new PropertyValueFactory<>("petName"));
 	petBreedtb.setCellValueFactory(new PropertyValueFactory<>("breed"));
@@ -351,32 +627,35 @@ public void addPetsShowListTable() throws SQLException {
 		
 		if(option.get().equals(ButtonType.OK)) {
 			
-			homePage.getScene().getWindow().hide();
+//			homePage.getScene().getWindow().hide();
+//			
+//			Parent root = FXMLLoader.load(getClass().getResource("/UI/register.fxml"));
+//			Stage stage = new Stage();
+//			Scene scene = new Scene(root);
+//			
+//			root.setOnMousePressed((MouseEvent event) -> {
+//				x= event.getSceneX();
+//				y= event.getSceneY();
+//			});
+//			
+//			root.setOnMouseDragged((MouseEvent event) -> {
+//				stage.setX(event.getSceneX() -x);
+//				stage.setY(event.getSceneY() -y);
+//				
+//				stage.setOpacity(.8);
+//			});
+//			
+//			root.setOnMouseReleased((MouseEvent event) -> {
+//				stage.setOpacity(1);
+//			});
+//			
+//			stage.initStyle(StageStyle.TRANSPARENT);
+//			
+//			stage.setScene(scene);
+//			stage.show();
 			
-			Parent root = FXMLLoader.load(getClass().getResource("/UI/register.fxml"));
-			Stage stage = new Stage();
-			Scene scene = new Scene(root);
-			
-			root.setOnMousePressed((MouseEvent event) -> {
-				x= event.getSceneX();
-				y= event.getSceneY();
-			});
-			
-			root.setOnMouseDragged((MouseEvent event) -> {
-				stage.setX(event.getSceneX() -x);
-				stage.setY(event.getSceneY() -y);
-				
-				stage.setOpacity(.8);
-			});
-			
-			root.setOnMouseReleased((MouseEvent event) -> {
-				stage.setOpacity(1);
-			});
-			
-			stage.initStyle(StageStyle.TRANSPARENT);
-			
-			stage.setScene(scene);
-			stage.show();
+			Main m = new Main();
+			m.changeScene("login.fxml", null);
 		}
 	}
 		catch(Exception e) {
@@ -385,15 +664,8 @@ public void addPetsShowListTable() throws SQLException {
 	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-		try {
-			addPetsShowListTable();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		myChoiceBox.getItems().addAll(userOptions);
-		
+		sellerAdPane.setVisible(false);
 		myChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if((String)myChoiceBox.getSelectionModel().getSelectedItem()== "Sell") {
 				priceLbl.setVisible(true);
@@ -404,66 +676,7 @@ public void addPetsShowListTable() throws SQLException {
 				priceInput.setVisible(false);
 			}
 			});
-		try {
-			getActivityData();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
-	
-	//fetching activity details
-	
-	  public ObservableList<ActivityData> getActivityData() throws SQLException {
-
-	        ObservableList<ActivityData> activityDataList = FXCollections.observableArrayList();
-
-	        String query = "select * from petbuyer";
-
-
-	        System.out.println("query " + query);
-
-	        ResultSet resultSet = DbConnection.selectQuery(query);
-
-	        if (resultSet != null) {
-
-	            while (resultSet.next()) {
-	            	
-
-	            int petBuyerId = Integer.parseInt(resultSet.getString("id"));
-	            String buyerFirstName = resultSet.getString("buyerFirstName");
-	            String buyerLastName = resultSet.getString("buyerLastName");
-	            int buyerId = Integer.parseInt(resultSet.getString("buyerId"));
-	            String status = resultSet.getString("status");
-	            String buyerMessage = resultSet.getString("buyerMessage");
-
-System.out.println(buyerMessage);
-	           ActivityData activitydata = new ActivityData(petBuyerId,buyerId,buyerMessage,status,buyerFirstName, buyerLastName);            
-
-
-	           activityDataList.add(activitydata);
-	      System.out.println(activitydata);
-
-	           
-
-	        }  
-
-	        }
-
-	        return activityDataList;
-
-	    }
-	  
-	  //displaying activity data
-		private ObservableList<ActivityData> activityTable;
-		public void showActivityTable() throws SQLException {
-			activityTable = getActivityData();
-			buyerName.setCellValueFactory(new PropertyValueFactory<>("buyerFirstName"));
-			message.setCellValueFactory(new PropertyValueFactory<>("message"));
-			status.setCellValueFactory(new PropertyValueFactory<>("status"));
-			activityTbl.setItems(activityTable);
-		}
-			
     
 	
 	@FXML
@@ -487,8 +700,10 @@ System.out.println(buyerMessage);
 	  public ObservableList<PetData> fetchPetDataList() throws SQLException {
 
 	        ObservableList<PetData> petdataList = FXCollections.observableArrayList();
-
-	        String query = "select * from petinfo";
+	       if(seller != null) {
+	    	   
+	       
+	        String query = "select * from petinfo where sellerId = " + seller.getSellerId() + ";";
 
 
 	        //System.out.println("query " + query);
@@ -511,17 +726,20 @@ System.out.println(buyerMessage);
 	            String sex = resultSet.getString("sex");
 	            String breed = resultSet.getString("breed");
 	            
-	            List<File> allPhotoItems = new ArrayList<>();
+//	            List<File> allPhotoItems = new ArrayList<>();
 //	            while (resultSet.next()) {
 //	                String filePath = resultSet.getString("image");
-//	                File file = new File(filePath);
-//	                allPhotoItems.add(file);
+//	                if(filePath != null) {
+//	                	File file = new File(filePath);
+//		                allPhotoItems.add(file);
+//	                }
+//	                
 //	            }
 //	        	
 //	            for (File file : allPhotoItems) {
 //	                System.out.println(file.getAbsolutePath());
 //	            }
-	           PetData petDataInfo = new PetData(petName,age,breed,price,sellerChoice,petCategory,sex,allPhotoItems);            
+	           PetData petDataInfo = new PetData(petName,age,breed,price,sellerChoice,petCategory,sex,null);            
 
 	          //  boolean empStatus = dbStatus.equals("0") ? false : true;
 
@@ -537,6 +755,7 @@ System.out.println(buyerMessage);
 	        }  
 
 	        }
+	  }
 
 	        return petdataList;
 
