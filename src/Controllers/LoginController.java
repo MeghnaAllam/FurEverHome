@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import Model.Buyer;
 import Model.Seller;
-import services.LoginService;
+import Services.LoginService;
 import application.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -21,11 +21,13 @@ public class PetService {
 	
 	public ObservableList<PetData> fetchBuyerPetDashboardInfo(int buyerId) throws SQLException {
 		ObservableList<PetData> petDataList = FXCollections.observableArrayList();
+
 		String query = "select * from petinfo WHERE id NOT IN (\r\n"
 				+ "    SELECT id\r\n"
 				+ "    FROM petBuyer\r\n"
 				+ "    WHERE buyerId = \r\n"
 				+ buyerId +");";
+
 		System.out.println("query " + query);
 		
 		

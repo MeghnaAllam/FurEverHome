@@ -18,7 +18,6 @@ import Model.Buyer;
 import Model.InterestedBuyerInfo;
 import Model.PetData;
 import Model.Seller;
-import Services.BuyerService;
 import Services.PetService;
 import application.Main;
 import javafx.collections.FXCollections;
@@ -56,6 +55,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import Services.BuyerService;
 import utilities.Constants;
 import utilities.DbConnection;
 
@@ -270,7 +270,7 @@ public class FormController implements Initializable {
 	public void initData(Object obj) {
 		showHome.setVisible(false);
 		sellerAdPane.setVisible(false);
-		petDetailsPane.setVisible(false);
+	//	petDetailsPane.setVisible(false);
 		this.seller = (Seller) obj;
 		try {
 			
@@ -335,8 +335,8 @@ public class FormController implements Initializable {
 				}
 				String selectedPetCategory=null;
 				RadioButton rb = (RadioButton)PetCategory.getSelectedToggle(); 
-				if (selectedRadioButton != null) {
-					selectedPetCategory = selectedRadioButton.getText();
+				if (rb != null) {
+					selectedPetCategory = rb.getText();
 				}
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Information Message");
@@ -347,8 +347,7 @@ public class FormController implements Initializable {
 				//clears the form
 				addPetsClear();
 				
-				//show in the table
-				addPetsShowListTable();
+				
 			
 
 			PetData pd = new PetData(petName,petAge,breed,price, choiceOfSelection,selectedPetCategory,selectedpetSex,allPhotoItems);
@@ -359,7 +358,9 @@ String sql = "INSERT INTO `petinfo`(`petCategory`,`petName`,`age`,`breed`,`selle
 			+ pd.getChoiceOfSelection()+ "', "+seller.getSellerId()+" ,'" + pd.getSex()+"', '" + pd.getPrice()+"','" + pd.getImage()+"')";
 System.out.println(sql);
         DbConnection.query(sql);   
-
+        
+      //show in the table
+		addPetsShowListTable();
 		}	
 		}
 
@@ -625,6 +626,7 @@ System.out.println(sql);
 	
 	private ObservableList<PetData> addPetsList;
     public void addPetsShowListTable() throws SQLException {
+    	addPetsList = fetchPetDataList();
 	petCategorytb.setCellValueFactory(new PropertyValueFactory<>("petCategory"));
 	petNametb.setCellValueFactory(new PropertyValueFactory<>("petName"));
 	petBreedtb.setCellValueFactory(new PropertyValueFactory<>("breed"));
@@ -843,8 +845,10 @@ System.out.println(sql);
 
 	            String sex = resultSet.getString("sex");
 	            String breed = resultSet.getString("breed");
+
 	            int petId = Integer.parseInt(resultSet.getString("id"));
 	            int sellerId = Integer.parseInt(resultSet.getString("sellerID"));
+
 
 //	            List<File> allPhotoItems = new ArrayList<>();
 //	            while (resultSet.next()) {
@@ -854,6 +858,7 @@ System.out.println(sql);
 //		                allPhotoItems.add(file);
 //	                }
 //	                
+
 
 	    //        List<File> allPhotoItems = new ArrayList<>();
 //	            while (resultSet.next()) {

@@ -20,7 +20,7 @@ public class DbConnection {
     public static void connection(){
        try{
     	   System.out.println(MEGHNA_PASSWORD);
-            connection = DriverManager.getConnection(URL, USER_NAME, MEGHNA_PASSWORD);
+            connection = DriverManager.getConnection(URL, USER_NAME, SHREYA_PASSWORD);
             System.out.println(connection);
             statement = connection.createStatement();
             System.out.println("Connection Opened");
