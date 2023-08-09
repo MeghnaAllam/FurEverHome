@@ -16,9 +16,13 @@ public class PetService {
 		
 	}
 	
-	public ObservableList<PetData> fetchBuyerPetDashboardInfo() throws SQLException {
+	public ObservableList<PetData> fetchBuyerPetDashboardInfo(int buyerId) throws SQLException {
 		ObservableList<PetData> petDataList = FXCollections.observableArrayList();
-		String query = "select * from petinfo";
+		String query = "select * from petinfo WHERE id NOT IN (\r\n"
+				+ "    SELECT id\r\n"
+				+ "    FROM petBuyer\r\n"
+				+ "    WHERE buyerId = \r\n"
+				+ buyerId +");";
 		System.out.println("query " + query);
 		ResultSet resultSet = DbConnection.selectQuery(query);
 		if(resultSet != null) {
@@ -115,7 +119,7 @@ public class PetService {
 				+ "FROM petBuyer pb\r\n"
 				+ "JOIN petinfo pi ON pb.id = pi.id\r\n"
 				+ "JOIN buyer b ON pb.buyerId = b.buyerId\r\n"
-				+ "WHERE pb.status IN ('Pending', 'Rejected', 'Approveds') AND pi.sellerId = "+sellerId+";";
+				+ "WHERE pb.status IN ('Pending', 'Rejected', 'Approved') AND pi.sellerId = "+sellerId+";";
 		resultSet = DbConnection.selectQuery(query);
 		return resultSet;
 	}

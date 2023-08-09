@@ -24,6 +24,7 @@ import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -471,6 +472,7 @@ System.out.println(sql);
 
 	private void filladTable(ObservableList<InterestedBuyerInfo> ibiObservableList, int petId) {
 		// TODO Auto-generated method stub
+		adTable.refresh();
 		adBuyerFNameColumn.setCellValueFactory(new PropertyValueFactory<InterestedBuyerInfo, String>("buyerFName"));
 		adBuyerLNameColumn.setCellValueFactory(new PropertyValueFactory<InterestedBuyerInfo, String>("buyerLName"));
 		adMessageColumn.setCellValueFactory(new PropertyValueFactory<InterestedBuyerInfo, String>("msg"));
@@ -482,7 +484,7 @@ System.out.println(sql);
 		    row.setOnMouseClicked(event -> {
 		        if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
 		        	InterestedBuyerInfo selectedBuyerRow = row.getItem();
-		        	adApproveBtn.setOnAction(btnEvent -> {
+		          	adApproveBtn.setOnAction(btnEvent -> {
 		        		ArrayList<Integer> ibiRejectArr = new ArrayList<Integer>();
 		        		  for(InterestedBuyerInfo ibi: ibiObservableList) {
 		        			  if (ibi.getBuyerId() == selectedBuyerRow.getBuyerId()) {
@@ -491,12 +493,28 @@ System.out.println(sql);
 		        				  ibiRejectArr.add(ibi.getBuyerId());
 		        			  }
 		        		  }
+		        		  System.out.println("petId inside button click: " + petId);
 		        		  ArrayList<Integer> approveArr = new ArrayList<Integer>();
 		        		  approveArr.add(selectedBuyerRow.getBuyerId());
 				        	setApproveStatus(approveArr, petId);
 				        	setRejectStatus(ibiRejectArr, petId);
+				        	
+				        	Alert alert = new Alert(AlertType.INFORMATION);
+							alert.setTitle("Information Message");
+							alert.setHeaderText(null);
+							alert.setContentText("Approved a buyer");
+							alert.showAndWait();
+							
+							  for(InterestedBuyerInfo ibi: ibiObservableList) {
+			        			  if (ibi.getBuyerId() == selectedBuyerRow.getBuyerId()) {
+			        				  ibi.setStatus(Constants.APPROVED);
+			        			  } else {
+			        				  ibi.setStatus(Constants.REJECTED);
+			        			  }
+			        		  }
+							  adTable.setItems(ibiObservableList);
+							  adApproveBtn.setVisible(false);
 		        		});
-		        	
 
 		        	}
 		        });

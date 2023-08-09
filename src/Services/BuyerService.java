@@ -25,14 +25,18 @@ public class BuyerService {
 	
 	public void setStatus(ArrayList<Integer> arrList, String status, int petId) {
 		if (arrList != null && arrList.size() > 0) {
-			String sql = "update petbuyer set status = " + status + " where id = "+ petId + " and ";
+			String sql = "update petbuyer set status = '" + status + "' where id = "+ petId + " and buyerId in (";
 			for(int i=0; i<arrList.size(); i++) {
-				sql += "buyerId = " + arrList.get(i);
+				sql += arrList.get(i);
 				if(i != arrList.size()-1) {
 					sql += ",";
+				}else {
+					sql += ");";
 				}
 			}
 			System.out.println(sql);
+			DbConnection.query(sql);
+			
 		}
 	}
 	
