@@ -32,7 +32,7 @@ public class PetService {
 				String choiceOfSelection = resultSet.getString("sellerChoice");
 				String breed = resultSet.getString("breed");
 				int sellerId = Integer.parseInt(resultSet.getString("sellerId"));
-				PetData pd = new PetData(petName, age, breed, price, choiceOfSelection, petCategory, sex);
+				PetData pd = new PetData(petName, age, breed, price, choiceOfSelection, petCategory, sex, null);
 				pd.setPetId(petId);
 				pd.setSellerId(sellerId);
 				petDataList.add(pd);
@@ -68,7 +68,7 @@ public class PetService {
 				String choiceOfSelection = resultSet.getString("sellerChoice");
 				String breed = resultSet.getString("breed");
 				int sellerId = Integer.parseInt(resultSet.getString("sellerId"));
-				PetData pd = new PetData(petName, age, breed, price, choiceOfSelection, petCategory, sex);
+				PetData pd = new PetData(petName, age, breed, price, choiceOfSelection, petCategory, sex, null);
 				pd.setPetId(petId);
 				pd.setSellerId(sellerId);
 				petDataList.add(pd);

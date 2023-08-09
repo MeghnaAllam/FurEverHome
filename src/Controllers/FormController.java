@@ -2,6 +2,7 @@ package Controllers;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import Model.ActivityData;
 import Model.PetData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,15 +27,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -44,6 +49,9 @@ import utilities.DbConnection;
 
 public class FormController implements Initializable {
 	FileChooser fileChooser = new FileChooser();
+	
+	 List<File> selectedFile = new ArrayList<>();
+	
 
     @FXML
     private RadioButton birds;
@@ -96,8 +104,6 @@ public class FormController implements Initializable {
     @FXML
     private Label petNameLabel;
 
-   
-
     @FXML
     private TextField priceInput;
 
@@ -112,6 +118,7 @@ public class FormController implements Initializable {
 
     @FXML
     private AnchorPane showActivity;
+    
 
     @FXML
     private TableView<PetData> showHome;
@@ -125,8 +132,18 @@ public class FormController implements Initializable {
     @FXML
     private Label uploadPicturesLbl;
     
+    @FXML
+    private TableView<ActivityData> activityTbl;
+ 
+    @FXML
+    private TableColumn<ActivityData, String> buyerName;
+    
+    @FXML
+    private TableColumn<ActivityData, String> message;
     
 
+    @FXML
+    private TableColumn<ActivityData, String> status;
 
     @FXML
     private AnchorPane addPetsPage;
@@ -152,13 +169,16 @@ public class FormController implements Initializable {
     @FXML
 	public Button logoutBtn;
     
-    
-	@FXML
-	private ListView listview;
+
+
+    @FXML
+    private ListView<String> listview;   
+
 	@FXML
 	private ChoiceBox<String> myChoiceBox;
 	
 	private String[] userOptions = {"Donate", "Sell"};
+	
 	
 	public void onSubmitbtn(ActionEvent event) {
 		
@@ -170,25 +190,40 @@ public class FormController implements Initializable {
 					||petBreedInput.getText().isEmpty()
 		|| myChoiceBox.getSelectionModel().getSelectedItem() == null
 		|| (RadioButton)sex.getSelectedToggle() == null
-		|| (RadioButton)PetCategory.getSelectedToggle() == null
-		|| priceInput.getText().isEmpty()) {
+		|| (RadioButton)PetCategory.getSelectedToggle() == null) {
 				
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error Message");
 				alert.setHeaderText(null);
 				alert.setContentText("Please fill all the fields in the form to proceed");
 				alert.showAndWait();
+				
 				//clears the form
 				addPetsClear();
 			}
 			
 			else {
 
-				String petName = petNameInput.getText();
+				 
+						 String petName = petNameInput.getText();
 				int petAge = Integer.parseInt(petAgeInput.getText());
 				String breed = petBreedInput.getText();
-				int price = Integer.parseInt(priceInput.getText());
+				int price=0;
+				if(!priceInput.getText().isEmpty()) {
+					price = Integer.parseInt(priceInput.getText());
+				}
+
+				List<File> allPhotoItems = selectedFile;
+	            System.out.println("All Items:");
+	            for (File item : allPhotoItems) {
+	            	 byte[] fileData = readFileAsBytes(item);
+	            }
+	            
+	           
 				String choiceOfSelection = (String)myChoiceBox.getSelectionModel().getSelectedItem();
+				//String photoTextBox = listview.getSelectionModel().getSelectedItem();;
+				
+				//System.out.println(photoTextBox);
 				String selectedpetSex=null;
 				RadioButton selectedRadioButton = (RadioButton)sex.getSelectedToggle(); 
 				if (selectedRadioButton != null) {
@@ -212,17 +247,17 @@ public class FormController implements Initializable {
 				addPetsShowListTable();
 			
 
-			PetData pd = new PetData(petName,petAge,breed,price, choiceOfSelection,selectedPetCategory,selectedpetSex);
+			PetData pd = new PetData(petName,petAge,breed,price, choiceOfSelection,selectedPetCategory,selectedpetSex,allPhotoItems);
 			
-String sql = "INSERT INTO `petinfo`(`petCategory`,`petName`,`age`,`breed`,`sellerChoice`,`sellerID`,`sex`,`price`) "
+String sql = "INSERT INTO `petinfo`(`petCategory`,`petName`,`age`,`breed`,`sellerChoice`,`sellerID`,`sex`,`price`, `image`) "
 
 			        + "VALUES ('" + pd.getPetCategory()+ "','" + pd.getPetName()+ "','" + pd.getAge()+ "','" + pd.getBreed()+ "','" 
-			+ pd.getChoiceOfSelection()+ "', '10' ,'" + pd.getSex()+"', '" + pd.getPrice()+"')";
+			+ pd.getChoiceOfSelection()+ "', '10' ,'" + pd.getSex()+"', '" + pd.getPrice()+"','" + pd.getImage()+"')";
 System.out.println(sql);
         DbConnection.query(sql);   
 
 		}	
-		}	
+		}
 
 	    
 		catch(NumberFormatException e) {
@@ -240,20 +275,37 @@ System.out.println(sql);
 		}
 	
 }
-	
+    private byte[] readFileAsBytes(File file) {
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            byte[] buffer = new byte[(int) file.length()];
+            inputStream.read(buffer);
+            inputStream.close();
+            return buffer;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+        
+        
 	public void addPetsClear() {
+        ObservableList<String> items = FXCollections.observableArrayList();
+        listview.setItems(items);
 		petNameInput.setText("");
 		petAgeInput.setText("");
 		petBreedInput.setText("");
 		priceInput.setText("");
+		items.clear();
 		myChoiceBox.getSelectionModel().clearSelection();
 		sex.selectToggle(null);
 		PetCategory.selectToggle(null);
 	}
 	
-	public void switchForm(ActionEvent event) {
+	public void switchForm(ActionEvent event) throws SQLException {
 		if(event.getSource() == homeBtn ) {
 			
+			addPetsShowListTable();
 			showHome.setVisible(true);
 			addPetsPage.setVisible(false);
 			showActivity.setVisible(false);
@@ -334,15 +386,91 @@ public void addPetsShowListTable() throws SQLException {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		try {
+			addPetsShowListTable();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		myChoiceBox.getItems().addAll(userOptions);
 		
+		myChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if((String)myChoiceBox.getSelectionModel().getSelectedItem()== "Sell") {
+				priceLbl.setVisible(true);
+				priceInput.setVisible(true);
+			}
+			else {
+				priceLbl.setVisible(false);
+				priceInput.setVisible(false);
+			}
+			});
+		try {
+			getActivityData();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	
+	//fetching activity details
+	
+	  public ObservableList<ActivityData> getActivityData() throws SQLException {
+
+	        ObservableList<ActivityData> activityDataList = FXCollections.observableArrayList();
+
+	        String query = "select * from petbuyer";
+
+
+	        System.out.println("query " + query);
+
+	        ResultSet resultSet = DbConnection.selectQuery(query);
+
+	        if (resultSet != null) {
+
+	            while (resultSet.next()) {
+	            	
+
+	            int petBuyerId = Integer.parseInt(resultSet.getString("id"));
+	            String buyerFirstName = resultSet.getString("buyerFirstName");
+	            String buyerLastName = resultSet.getString("buyerLastName");
+	            int buyerId = Integer.parseInt(resultSet.getString("buyerId"));
+	            String status = resultSet.getString("status");
+	            String buyerMessage = resultSet.getString("buyerMessage");
+
+System.out.println(buyerMessage);
+	           ActivityData activitydata = new ActivityData(petBuyerId,buyerId,buyerMessage,status,buyerFirstName, buyerLastName);            
+
+
+	           activityDataList.add(activitydata);
+	      System.out.println(activitydata);
+
+	           
+
+	        }  
+
+	        }
+
+	        return activityDataList;
+
+	    }
+	  
+	  //displaying activity data
+		private ObservableList<ActivityData> activityTable;
+		public void showActivityTable() throws SQLException {
+			activityTable = getActivityData();
+			buyerName.setCellValueFactory(new PropertyValueFactory<>("buyerFirstName"));
+			message.setCellValueFactory(new PropertyValueFactory<>("message"));
+			status.setCellValueFactory(new PropertyValueFactory<>("status"));
+			activityTbl.setItems(activityTable);
+		}
+			
+    
 	
 	@FXML
     void uploadImages(MouseEvent event) {
 		 fileChooser.setInitialDirectory(new File("C:\\Program Files"));
 		 fileChooser.getExtensionFilters().addAll(new ExtensionFilter("PNG Files", "*.png"));
-  List<File> selectedFile = fileChooser.showOpenMultipleDialog(null);		
+  selectedFile = fileChooser.showOpenMultipleDialog(null);		
 		
 		if(selectedFile!=null) {
 			for(int i=0;i<selectedFile.size();i++) {
@@ -363,7 +491,7 @@ public void addPetsShowListTable() throws SQLException {
 	        String query = "select * from petinfo";
 
 
-	        System.out.println("query " + query);
+	        //System.out.println("query " + query);
 
 	        ResultSet resultSet = DbConnection.selectQuery(query);
 
@@ -373,7 +501,7 @@ public void addPetsShowListTable() throws SQLException {
 	            	
 
 	            String petName = resultSet.getString("petName");
-	            int price = Integer.parseInt(resultSet.getString("price"));
+	            int price = (resultSet.getString("price") != null)?Integer.parseInt(resultSet.getString("price")): 0;
 
 	            int age = Integer.parseInt(resultSet.getString("age"));
 	            String petCategory = resultSet.getString("petCategory");
@@ -382,9 +510,18 @@ public void addPetsShowListTable() throws SQLException {
 
 	            String sex = resultSet.getString("sex");
 	            String breed = resultSet.getString("breed");
-
-
-	           PetData petDataInfo = new PetData(petName,age,breed,price,sellerChoice,petCategory,sex);            
+	            
+	            List<File> allPhotoItems = new ArrayList<>();
+	            while (resultSet.next()) {
+	                String filePath = resultSet.getString("image");
+	                File file = new File(filePath);
+	                allPhotoItems.add(file);
+	            }
+//	        	
+//	            for (File file : allPhotoItems) {
+//	                System.out.println(file.getAbsolutePath());
+//	            }
+	           PetData petDataInfo = new PetData(petName,age,breed,price,sellerChoice,petCategory,sex,allPhotoItems);            
 
 	          //  boolean empStatus = dbStatus.equals("0") ? false : true;
 
@@ -393,7 +530,7 @@ public void addPetsShowListTable() throws SQLException {
 	          //  justiceDepartmentEmployee.setId(id);
 
 	       petdataList.add(petDataInfo);
-	       System.out.println(sellerChoice);
+	      // System.out.println(sellerChoice);
 
 	           
 
