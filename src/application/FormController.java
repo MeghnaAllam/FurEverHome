@@ -491,8 +491,12 @@ System.out.println(buyerMessage);
 	        //System.out.println("query " + query);
 
 	        ResultSet resultSet = DbConnection.selectQuery(query);
+	        
+
 
 	        if (resultSet != null) {
+	        	
+	           
 
 	            while (resultSet.next()) {
 	            	
@@ -508,26 +512,14 @@ System.out.println(buyerMessage);
 	            String sex = resultSet.getString("sex");
 	            String breed = resultSet.getString("breed");
 	            
-	            List<File> allPhotoItems = new ArrayList<>();
-	            while (resultSet.next()) {
-	                String filePath = resultSet.getString("image");
-	                File file = new File(filePath);
-	                allPhotoItems.add(file);
-	            }
-//	        	
-//	            for (File file : allPhotoItems) {
-//	                System.out.println(file.getAbsolutePath());
-//	            }
-	           PetData petDataInfo = new PetData(petName,age,breed,price,sellerChoice,petCategory,sex,allPhotoItems);            
+	           List<File> allPhotos = new ArrayList<>();
+	           System.out.println(allPhotos);
+	          // fetchImageDetails(resultSet);
 
-	          //  boolean empStatus = dbStatus.equals("0") ? false : true;
+	           PetData petDataInfo = new PetData(petName,age,breed,price,sellerChoice,petCategory,sex,allPhotos);            
 
-	           // justiceDepartmentEmployee.setStatus(empStatus);
-
-	          //  justiceDepartmentEmployee.setId(id);
 
 	       petdataList.add(petDataInfo);
-	      // System.out.println(sellerChoice);
 
 	           
 
@@ -538,4 +530,17 @@ System.out.println(buyerMessage);
 	        return petdataList;
 
 	    }
+	  
+	  public void fetchImageDetails(ResultSet resultSet) throws SQLException {
+		  List<File> allPhotoItems=new ArrayList<>();
+		  while(resultSet.next()) {
+	      String filePath = resultSet.getString("image");
+	      File file = new File(filePath);
+	      System.out.println(file);
+	      allPhotoItems.add(file);
+		  }
+		  
+	  
+	  }
+
 }
