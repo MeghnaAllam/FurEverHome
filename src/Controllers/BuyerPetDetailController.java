@@ -1,12 +1,14 @@
 package Controllers;
 
+import java.io.File;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import Model.Buyer;
 import Model.PetBuyer;
 import Model.PetData;
-import Services.PetService;
+import services.PetService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -14,6 +16,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import utilities.Constants;
@@ -21,8 +24,8 @@ import utilities.Constants;
 public class BuyerPetDetailController {
 	
 	@FXML
-	private Label nameLbl;
-	
+	private Label nameLbl;  
+		
 	@FXML
 	private Label ageLbl;
 	
@@ -58,6 +61,9 @@ public class BuyerPetDetailController {
 	
 	@FXML
 	private AnchorPane messagePane;
+	
+    @FXML
+    private List<File> showImage;
 	
 	@FXML
 	private TextArea buyerMessage;

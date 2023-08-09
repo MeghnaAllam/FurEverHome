@@ -1,7 +1,10 @@
 package Services;
 
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import Model.PetBuyer;
 import Model.PetData;
@@ -24,7 +27,11 @@ public class PetService {
 				+ "    WHERE buyerId = \r\n"
 				+ buyerId +");";
 		System.out.println("query " + query);
+		
+		
 		ResultSet resultSet = DbConnection.selectQuery(query);
+		
+		
 		if(resultSet != null) {
 			while(resultSet.next()) {
 				int petId = Integer.parseInt(resultSet.getString("id"));
@@ -35,7 +42,8 @@ public class PetService {
 				Integer price = (resultSet.getString("price") != null)?( Integer.parseInt(resultSet.getString("price"))): 0;
 				String choiceOfSelection = resultSet.getString("sellerChoice");
 				String breed = resultSet.getString("breed");
-				int sellerId = Integer.parseInt(resultSet.getString("sellerId"));
+				int sellerId = Integer.parseInt(resultSet.getString("sellerId"));	
+
 				PetData pd = new PetData(petName, age, breed, price, choiceOfSelection, petCategory, sex, null);
 				pd.setPetId(petId);
 				pd.setSellerId(sellerId);
@@ -44,7 +52,7 @@ public class PetService {
 		}
 		return petDataList;
 	}
-	
+
 	public void addBuyerInterest(String msg, int petId, int buyerId) {
 		String sql = "INSERT INTO `petbuyer`(`id`, `buyerId`, `status`, `buyerMessage`)"
 				+ "VALUES ('" + petId + "','" + buyerId + "','" + Constants.PENDING + "','" + msg + "')";
@@ -61,6 +69,7 @@ public class PetService {
 				+ "WHERE pb.buyerId =" + buyerId+ ";";
 		System.out.println("query " + query);
 		ResultSet resultSet = DbConnection.selectQuery(query);
+		
 		if(resultSet != null) {
 			while(resultSet.next()) {
 				int petId = Integer.parseInt(resultSet.getString("id"));
@@ -72,17 +81,21 @@ public class PetService {
 				String choiceOfSelection = resultSet.getString("sellerChoice");
 				String breed = resultSet.getString("breed");
 				int sellerId = Integer.parseInt(resultSet.getString("sellerId"));
+				 
+				
 				PetData pd = new PetData(petName, age, breed, price, choiceOfSelection, petCategory, sex, null);
 				pd.setPetId(petId);
 				pd.setSellerId(sellerId);
 				petDataList.add(pd);
 			}
+			
+			
 		}
 		return petDataList;
 	}
 	
 	public PetBuyer retrievePetBuyerData(int petId, int buyerId) throws NumberFormatException, SQLException {
-		PetBuyer pb = null;
+		PetBuyer pb = null;		
 		String sql = "select * from petbuyer where id = "+petId+" and buyerId = "+buyerId+";";
 		System.out.println(sql);
 		ResultSet resultSet = DbConnection.selectQuery(sql);

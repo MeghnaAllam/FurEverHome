@@ -1,4 +1,4 @@
-package Services;
+package services;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,6 +53,7 @@ public class LoginService {
 		String lName = "";
 		String state = "";
 		String city = "";
+		
 		String query = "select * from buyer where emailId ='" + emailId + "'";
 		ResultSet resultSet = DbConnection.selectQuery(query);
 		while (resultSet.next()) {
@@ -69,6 +70,51 @@ public class LoginService {
 			b.setBuyerId(Integer.parseInt(buyerId));
 		}
 		return b;
+	}
+	
+	public Integer updateSellerPassword() throws SQLException {
+		Seller fseller = null;
+		String retreivedPassword = "";
+		String fName = "";
+		String sellerId = "";
+		String lName = "";
+		String state = "";
+		String city = "";
+		
+		
+		String squery ="update seller set password = '" + password+"'"+" where emailId ='" + emailId + "'";
+	System.out.println(squery);
+		Integer resultSet = DbConnection.updateQuery(squery);
+		if(resultSet!=null) {
+			return 1;
+		}
+		else {
+		return 0;
+		}
+		//loginSeller();
+}
+	
+	public Integer updateBuyerPassword() throws SQLException {
+		Buyer fbuyer = null;
+		String retreivedPassword = "";
+		String fName = "";
+		String buyerId = "";
+		String lName = "";
+		String state = "";
+		String city = "";
+		
+		
+		String squery ="update buyer set password = '" + password+"'"+" where emailId ='" + emailId + "'";
+	System.out.println(squery);
+		Integer resultSet = DbConnection.updateQuery(squery);
+		if(resultSet!=null) {
+			return 1;
+		}
+		else {
+		return -1;
+		}
+		
+		
 	}
 	
 	public boolean validatePassword(String password, String rPassword) {

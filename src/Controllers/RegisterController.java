@@ -7,8 +7,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Model.Buyer;
-import Services.BuyerService;
-import Services.SellerService;
+import services.BuyerService;
+import services.SellerService;
 import application.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

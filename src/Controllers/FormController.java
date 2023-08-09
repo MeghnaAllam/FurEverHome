@@ -845,7 +845,7 @@ System.out.println(sql);
 	            String breed = resultSet.getString("breed");
 	            int petId = Integer.parseInt(resultSet.getString("id"));
 	            int sellerId = Integer.parseInt(resultSet.getString("sellerID"));
-	            
+
 //	            List<File> allPhotoItems = new ArrayList<>();
 //	            while (resultSet.next()) {
 //	                String filePath = resultSet.getString("image");
@@ -854,6 +854,13 @@ System.out.println(sql);
 //		                allPhotoItems.add(file);
 //	                }
 //	                
+
+	    //        List<File> allPhotoItems = new ArrayList<>();
+//	            while (resultSet.next()) {
+//	                String filePath = resultSet.getString("image");
+//	                File file = new File(filePath);
+//	                allPhotoItems.add(file);
+
 //	            }
 //	        	
 //	            for (File file : allPhotoItems) {

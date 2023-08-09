@@ -6,10 +6,12 @@ import java.sql.SQLException;
 
 import Model.Buyer;
 import Model.Seller;
-import Services.LoginService;
+import services.LoginService;
 import application.Main;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -27,6 +29,11 @@ public class LoginController {
 	
 	@FXML
 	private PasswordField passwordField;
+	
+    @FXML
+    private Hyperlink forgotPasswordBtn;
+    
+    
 
 	
 	public void onLogin() {
@@ -70,4 +77,10 @@ public class LoginController {
 		Main m = new Main();
 		m.changeScene("SellerDashboard.fxml", seller);
 	}
+	
+    @FXML
+    void handleForgotPassword(ActionEvent event) {
+    	Main m = new Main();
+           m.changeScene("ForgotPassword.fxml",null);
+    } 
 }

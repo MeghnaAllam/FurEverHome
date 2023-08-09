@@ -3,35 +3,32 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.BuyerPetDetailController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.BuyerPetDetailController">
    <children>
-      <ImageView fitHeight="150.0" fitWidth="166.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="98.0" layoutY="83.0" text="Pet Image Here" />
-      <Label alignment="CENTER_RIGHT" layoutX="188.0" layoutY="45.0" prefHeight="26.0" prefWidth="74.0" text="Pet Name :" />
-      <Label alignment="CENTER_RIGHT" layoutX="188.0" layoutY="94.0" prefHeight="26.0" prefWidth="74.0" text="Pet Category:" />
-      <Label alignment="CENTER_RIGHT" layoutX="368.0" layoutY="45.0" prefHeight="26.0" prefWidth="74.0" text="Age:" />
-      <Label alignment="CENTER_RIGHT" layoutX="368.0" layoutY="94.0" prefHeight="26.0" prefWidth="74.0" text="Breed:" />
-      <Label fx:id="nameLbl" alignment="CENTER" layoutX="283.0" layoutY="45.0" prefHeight="26.0" prefWidth="74.0" text="Name i/p" />
-      <Label fx:id="categoryLbl" alignment="CENTER" layoutX="283.0" layoutY="94.0" prefHeight="26.0" prefWidth="74.0" text="Category i/p" />
-      <Label fx:id="ageLbl" alignment="CENTER" layoutX="506.0" layoutY="45.0" prefHeight="26.0" prefWidth="74.0" text="Age i/p" />
-      <Label fx:id="breedLbl" alignment="CENTER" layoutX="506.0" layoutY="95.0" prefHeight="26.0" prefWidth="74.0" text="Breed i/p" />
-      <Button fx:id="adoptAndBuy" layoutX="283.0" layoutY="176.0" mnemonicParsing="false" text="Adopt/Buy" />
-      <Label alignment="CENTER_RIGHT" layoutX="188.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Sex:" />
-      <Label fx:id="sexLbl" alignment="CENTER" layoutX="273.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Sex i/p" />
-      <Label fx:id="price" alignment="CENTER_RIGHT" layoutX="368.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Price:" />
-      <Label fx:id="priceLbl" alignment="CENTER" layoutX="506.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Price i/p" />
-      <AnchorPane fx:id="messagePane" layoutX="100.0" layoutY="214.0" prefHeight="140.0" prefWidth="440.0">
+      <Label alignment="CENTER_RIGHT" layoutX="223.0" layoutY="114.0" prefHeight="26.0" prefWidth="64.0" text="Pet Name :" />
+      <Label alignment="CENTER_RIGHT" layoutX="218.0" layoutY="157.0" prefHeight="26.0" prefWidth="74.0" text="Pet Category:" />
+      <Label alignment="CENTER_RIGHT" layoutX="422.0" layoutY="88.0" prefHeight="26.0" prefWidth="35.0" text="Age:" />
+      <Label alignment="CENTER_RIGHT" layoutX="414.0" layoutY="135.0" prefHeight="26.0" prefWidth="51.0" text="Breed:" />
+      <Label fx:id="nameLbl" alignment="CENTER" layoutX="301.0" layoutY="114.0" prefHeight="26.0" prefWidth="74.0" text="Name i/p" />
+      <Label fx:id="categoryLbl" alignment="CENTER" layoutX="308.0" layoutY="157.0" prefHeight="26.0" prefWidth="74.0" text="Category i/p" />
+      <Label fx:id="ageLbl" alignment="CENTER" layoutX="487.0" layoutY="88.0" prefHeight="26.0" prefWidth="74.0" text="Age i/p" />
+      <Label fx:id="breedLbl" alignment="CENTER" layoutX="507.0" layoutY="135.0" prefHeight="26.0" prefWidth="74.0" text="Breed i/p" />
+      <Button fx:id="adoptAndBuy" layoutX="308.0" layoutY="241.0" mnemonicParsing="false" text="Adopt/Buy" />
+      <Label alignment="CENTER_RIGHT" layoutX="242.0" layoutY="194.0" prefHeight="26.0" prefWidth="25.0" text="Sex:" />
+      <Label fx:id="sexLbl" alignment="CENTER" layoutX="308.0" layoutY="198.0" prefHeight="26.0" prefWidth="74.0" text="Sex i/p" />
+      <Label fx:id="price" alignment="CENTER_RIGHT" layoutX="432.0" layoutY="170.0" prefHeight="26.0" prefWidth="35.0" text="Price:" />
+      <Label fx:id="priceLbl" alignment="CENTER" layoutX="507.0" layoutY="170.0" prefHeight="26.0" prefWidth="74.0" text="Price i/p" />
+      <AnchorPane fx:id="messagePane" layoutX="149.0" layoutY="283.0" prefHeight="140.0" prefWidth="451.0">
          <children>
             <Label layoutX="32.0" layoutY="27.0" text="Message to Seller:" />
-            <TextArea fx:id="buyerMessage" layoutX="149.0" layoutY="12.0" prefHeight="72.0" prefWidth="279.0" />
+            <TextArea fx:id="buyerMessage" layoutX="146.0" layoutY="20.0" prefHeight="72.0" prefWidth="279.0" />
             <Button fx:id="buyerCancelMsgbtn" layoutX="54.0" layoutY="101.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
             <Button fx:id="buyerSubmitBtn" layoutX="243.0" layoutY="100.0" mnemonicParsing="false" onAction="#onSubmit" prefHeight="26.0" prefWidth="90.0" text="SUBMIT" />
          </children>
       </AnchorPane>
-      <Label fx:id="statusLbl" layoutX="414.0" layoutY="180.0" text="Status:" />
-      <Label fx:id="statusLblInput" layoutX="492.0" layoutY="180.0" text="Status input" />
+      <Label fx:id="statusLbl" layoutX="432.0" layoutY="211.0" text="Status:" />
+      <Label fx:id="statusLblInput" layoutX="512.0" layoutY="211.0" text="Status input" />
    </children>
 </AnchorPane>
