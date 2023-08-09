@@ -80,7 +80,10 @@ public class BuyerController implements Initializable {
 	}
 	
 	public void onMyActivity() throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("/UI/buyerActivityPane.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/UI/buyerActivityPane.fxml"));
+		Parent root = loader.load();
+		BuyerActivityController bac = loader.getController();
+		bac.initData(buyer, mainPane);
 		mainPane.setCenter(root);
 	}
 	
@@ -158,7 +161,7 @@ public class BuyerController implements Initializable {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/UI/buyerPetDetailsPane.fxml"));
 		Parent root = loader.load();
 		BuyerPetDetailController bpc = loader.getController();
-		bpc.initData(petData);
+		bpc.initData(petData, buyer);
 		mainPane.setCenter(root);
 	}
 

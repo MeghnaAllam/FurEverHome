@@ -27,7 +27,7 @@
                 <TableColumn fx:id="petNameColumn" prefWidth="112.79998779296875" text="Pet Name" />
                   <TableColumn fx:id="breedColumn" prefWidth="144.0" text="Breed" />
                   <TableColumn fx:id="ageColumn" prefWidth="88.0" text="Age" />
-                  <TableColumn fx:id="sexColumn" prefWidth="107.2000732421875" text="Sex" />
+                  <TableColumn fx:id="sexColumn" prefWidth="110.4000244140625" text="Sex" />
               </columns>
             </TableView>
          </children>

@@ -18,18 +18,20 @@
       <Label fx:id="categoryLbl" alignment="CENTER" layoutX="283.0" layoutY="94.0" prefHeight="26.0" prefWidth="74.0" text="Category i/p" />
       <Label fx:id="ageLbl" alignment="CENTER" layoutX="506.0" layoutY="45.0" prefHeight="26.0" prefWidth="74.0" text="Age i/p" />
       <Label fx:id="breedLbl" alignment="CENTER" layoutX="506.0" layoutY="95.0" prefHeight="26.0" prefWidth="74.0" text="Breed i/p" />
-      <Button fx:id="adoptAndBuy" layoutX="274.0" layoutY="211.0" mnemonicParsing="false" text="Adopt/Buy" />
+      <Button fx:id="adoptAndBuy" layoutX="283.0" layoutY="176.0" mnemonicParsing="false" text="Adopt/Buy" />
       <Label alignment="CENTER_RIGHT" layoutX="188.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Sex:" />
       <Label fx:id="sexLbl" alignment="CENTER" layoutX="273.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Sex i/p" />
       <Label fx:id="price" alignment="CENTER_RIGHT" layoutX="368.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Price:" />
       <Label fx:id="priceLbl" alignment="CENTER" layoutX="506.0" layoutY="134.0" prefHeight="26.0" prefWidth="74.0" text="Price i/p" />
-      <AnchorPane fx:id="messagePane" layoutX="84.0" layoutY="246.0" prefHeight="140.0" prefWidth="440.0">
+      <AnchorPane fx:id="messagePane" layoutX="100.0" layoutY="214.0" prefHeight="140.0" prefWidth="440.0">
          <children>
             <Label layoutX="32.0" layoutY="27.0" text="Message to Seller:" />
-            <TextArea layoutX="149.0" layoutY="12.0" prefHeight="72.0" prefWidth="279.0" />
-            <Button layoutX="54.0" layoutY="101.0" mnemonicParsing="false" text="Cancel" />
-            <Button layoutX="243.0" layoutY="100.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="SUBMIT" />
+            <TextArea fx:id="buyerMessage" layoutX="149.0" layoutY="12.0" prefHeight="72.0" prefWidth="279.0" />
+            <Button fx:id="buyerCancelMsgbtn" layoutX="54.0" layoutY="101.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+            <Button fx:id="buyerSubmitBtn" layoutX="243.0" layoutY="100.0" mnemonicParsing="false" onAction="#onSubmit" prefHeight="26.0" prefWidth="90.0" text="SUBMIT" />
          </children>
       </AnchorPane>
+      <Label fx:id="statusLbl" layoutX="414.0" layoutY="180.0" text="Status:" />
+      <Label fx:id="statusLblInput" layoutX="492.0" layoutY="180.0" text="Status input" />
    </children>
 </AnchorPane>
