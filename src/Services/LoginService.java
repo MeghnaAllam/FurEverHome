@@ -94,7 +94,7 @@ public class LoginService {
 }
 	
 	public Integer updateBuyerPassword() throws SQLException {
-		Buyer b = null;
+		Buyer fbuyer = null;
 		String retreivedPassword = "";
 		String fName = "";
 		String buyerId = "";
