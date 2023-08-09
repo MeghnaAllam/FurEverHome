@@ -19,8 +19,8 @@ public class DbConnection {
     /* Creating Connection*/
     public static void connection(){
        try{
-    	   System.out.println(SHREYA_PASSWORD);
-            connection = DriverManager.getConnection(URL, USER_NAME, SHREYA_PASSWORD);
+    	   System.out.println(MEGHNA_PASSWORD);
+            connection = DriverManager.getConnection(URL, USER_NAME, MEGHNA_PASSWORD);
             System.out.println(connection);
             statement = connection.createStatement();
             System.out.println("Connection Opened");
@@ -42,6 +42,7 @@ public class DbConnection {
         }
     }
     
+    
     /*  Executing Query */
     public static boolean query(String query) {
         try{
@@ -53,6 +54,7 @@ public class DbConnection {
 		return true;
     }
     
+    
     /* Prepares the data first then execute it */
      public static PreparedStatement getPreStatement(String query)
      {
@@ -61,4 +63,16 @@ public class DbConnection {
          } catch (SQLException e) {}
        return null;
      }
+
+	public static Integer updateQuery(String squery) {
+		// TODO Auto-generated method stub
+	       try{
+	            connection();            
+	            return statement.executeUpdate(squery);
+	        }catch(SQLException e){
+	        	e.printStackTrace();
+	            return null;
+	            
+	        }
+	}
 }

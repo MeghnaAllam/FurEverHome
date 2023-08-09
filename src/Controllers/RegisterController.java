@@ -2,8 +2,8 @@ package Controllers;
 
 import Model.Seller;
 import Model.Buyer;
-import Services.BuyerService;
-import Services.SellerService;
+import services.BuyerService;
+import services.SellerService;
 import application.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;

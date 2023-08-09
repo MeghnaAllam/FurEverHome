@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 
 import Model.Buyer;
 import Model.PetData;
-import Services.PetService;
+import services.PetService;
 import application.Main;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,6 +25,7 @@ import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
@@ -65,6 +66,7 @@ public class BuyerController implements Initializable {
 	
 	@FXML
 	private TableColumn<PetData, String> sexColumn;
+	
 	
 	private ObservableList<PetData> petDetailsList;
 	

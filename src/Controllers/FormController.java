@@ -512,11 +512,11 @@ System.out.println(buyerMessage);
 	            String breed = resultSet.getString("breed");
 	            
 	            List<File> allPhotoItems = new ArrayList<>();
-	            while (resultSet.next()) {
-	                String filePath = resultSet.getString("image");
-	                File file = new File(filePath);
-	                allPhotoItems.add(file);
-	            }
+//	            while (resultSet.next()) {
+//	                String filePath = resultSet.getString("image");
+//	                File file = new File(filePath);
+//	                allPhotoItems.add(file);
+//	            }
 //	        	
 //	            for (File file : allPhotoItems) {
 //	                System.out.println(file.getAbsolutePath());

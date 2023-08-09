@@ -1,4 +1,4 @@
-package Services;
+package services;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,6 +69,51 @@ public class LoginService {
 			b.setBuyerId(Integer.parseInt(buyerId));
 		}
 		return b;
+	}
+	
+	public Integer updateSellerPassword() throws SQLException {
+		Seller fseller = null;
+		String retreivedPassword = "";
+		String fName = "";
+		String sellerId = "";
+		String lName = "";
+		String state = "";
+		String city = "";
+		
+		
+		String squery ="update seller set password = '" + password+"'"+" where emailId ='" + emailId + "'";
+	System.out.println(squery);
+		Integer resultSet = DbConnection.updateQuery(squery);
+		if(resultSet!=null) {
+			return 1;
+		}
+		else {
+		return 0;
+		}
+		//loginSeller();
+}
+	
+	public Integer updateBuyerPassword() throws SQLException {
+		Buyer b = null;
+		String retreivedPassword = "";
+		String fName = "";
+		String buyerId = "";
+		String lName = "";
+		String state = "";
+		String city = "";
+		
+		
+		String squery ="update buyer set password = '" + password+"'"+" where emailId ='" + emailId + "'";
+	System.out.println(squery);
+		Integer resultSet = DbConnection.updateQuery(squery);
+		if(resultSet!=null) {
+			return 2;
+		}
+		else {
+		return 0;
+		}
+		
+		
 	}
 	
 	public boolean validatePassword(String password, String rPassword) {
