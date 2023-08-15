@@ -112,5 +112,10 @@ public class ForgotPasswordController {
 	public boolean validateInputFields() {
 		return true;
 	}
+	
+	public void onLogin() {
+		Main m = new Main();
+		m.changeScene("login.fxml", null);
+	}
 
 }

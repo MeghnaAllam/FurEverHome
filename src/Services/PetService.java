@@ -143,7 +143,7 @@ public class PetService {
 		String query = "update petinfo set petName = '" + pd.getPetName() + "', age = " + pd.getAge() +
 				", breed = '" + pd.getBreed() + "', sex = '" + pd.getSex() + "'";
 		if(pd.getPrice() > 0) {
-			query += ", price = " + pd.getPrice() + ";";
+			query += ", price = " + pd.getPrice();
 		}
 		query = query + " where id = " + pd.getPetId() + ";";
 		System.out.println(query);

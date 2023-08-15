@@ -1,6 +1,7 @@
 package Controllers;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -25,6 +26,7 @@ import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -36,6 +38,9 @@ public class BuyerController implements Initializable {
 	
 	@FXML 
 	private Button homeBtn;
+	
+	@FXML
+	private ImageView imageView;
 	
 	@FXML
 	private Button myActivityBtn;
@@ -98,9 +103,9 @@ public class BuyerController implements Initializable {
 	public void onLogOut() throws IOException {
 		try {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Error Message");
+		alert.setTitle("Logout Message");
 		alert.setHeaderText(null);
-		alert.setContentText("Are you sure you want to logout");
+		alert.setContentText("Are you sure you want to logout?");
 		
 		Optional<ButtonType> option = alert.showAndWait();
 		
@@ -116,7 +121,9 @@ public class BuyerController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {		
-		
+		 File wordImage = new File("src/images/biggest.png");
+		 Image imageRight = new Image(wordImage.toURI().toString());
+		 imageView.setImage(imageRight);
 	}
 	
 	public void fillHomePetTable() {

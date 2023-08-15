@@ -26,9 +26,13 @@ public class LoginService {
 		String lName = "";
 		String state = "";
 		String city = "";
+		String retreivedEmailId = "";
+		
 		String query = "select * from seller where emailId ='" + emailId + "'";
 		ResultSet resultSet = DbConnection.selectQuery(query);
+		
 		while (resultSet.next()) {
+			retreivedEmailId = resultSet.getString("emailId");
 			retreivedPassword = resultSet.getString("password");
 			fName = resultSet.getString("firstName");
 			sellerId = resultSet.getString("sellerId");
@@ -38,8 +42,10 @@ public class LoginService {
 		}
 		
 		if (validatePassword(password, retreivedPassword)) {
-			s = new Seller(fName, lName, emailId, password, state, city, Constants.SELLER);
-			s.setSellerId(Integer.parseInt(sellerId));
+			if(retreivedEmailId != null && !retreivedEmailId.trim().equals("")) {
+				s = new Seller(fName, lName, emailId, password, state, city, Constants.SELLER);
+				s.setSellerId(Integer.parseInt(sellerId));
+			}
 		}
 		return s;
 		
@@ -53,10 +59,12 @@ public class LoginService {
 		String lName = "";
 		String state = "";
 		String city = "";
+		String retreivedEmailId = "";
 		
 		String query = "select * from buyer where emailId ='" + emailId + "'";
 		ResultSet resultSet = DbConnection.selectQuery(query);
 		while (resultSet.next()) {
+			retreivedEmailId = resultSet.getString("emailId");
 			retreivedPassword = resultSet.getString("password");
 			fName = resultSet.getString("firstName");
 			buyerId = resultSet.getString("buyerId");
@@ -66,22 +74,15 @@ public class LoginService {
 		}
 		
 		if (validatePassword(password, retreivedPassword)) {
-			b = new Buyer(fName, lName, emailId, password, state, city, Constants.BUYER);
-			b.setBuyerId(Integer.parseInt(buyerId));
+			if(retreivedEmailId != null && !retreivedEmailId.trim().equals("")) {
+				b = new Buyer(fName, lName, emailId, password, state, city, Constants.BUYER);
+				b.setBuyerId(Integer.parseInt(buyerId));
+			}
 		}
 		return b;
 	}
 	
 	public Integer updateSellerPassword() throws SQLException {
-		Seller fseller = null;
-		String retreivedPassword = "";
-		String fName = "";
-		String sellerId = "";
-		String lName = "";
-		String state = "";
-		String city = "";
-		
-		
 		String squery ="update seller set password = '" + password+"'"+" where emailId ='" + emailId + "'";
 	System.out.println(squery);
 		Integer resultSet = DbConnection.updateQuery(squery);
@@ -91,19 +92,9 @@ public class LoginService {
 		else {
 		return 0;
 		}
-		//loginSeller();
 }
 	
 	public Integer updateBuyerPassword() throws SQLException {
-		Buyer fbuyer = null;
-		String retreivedPassword = "";
-		String fName = "";
-		String buyerId = "";
-		String lName = "";
-		String state = "";
-		String city = "";
-		
-		
 		String squery ="update buyer set password = '" + password+"'"+" where emailId ='" + emailId + "'";
 	System.out.println(squery);
 		Integer resultSet = DbConnection.updateQuery(squery);
@@ -118,7 +109,8 @@ public class LoginService {
 	}
 	
 	public boolean validatePassword(String password, String rPassword) {
-		if(password.equals(rPassword)) {
+		if(password != null && rPassword !=null &&
+				password.trim().equals(rPassword.trim())) {
 			return true;
 		}
 		return false;

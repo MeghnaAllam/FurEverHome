@@ -129,7 +129,7 @@ public class BuyerPetDetailController {
 			setStatus(Constants.PENDING, true);
 		}else {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setContentText("Writing a personalized message to seller increases your chances.\n Press OK to write the message and Cancel to submit withour message.");
+			alert.setContentText("Writing a personalized message to seller increases your chances.\n Press OK to write the message and Cancel to submit without message.");
 			Optional<ButtonType> option = alert.showAndWait();
 			if(option.get().equals(ButtonType.CANCEL)) {
 				submitBuyerInterest(msg);

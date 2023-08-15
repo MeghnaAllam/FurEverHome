@@ -1,9 +1,11 @@
 package Services;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Model.Buyer;
+import utilities.Constants;
 import utilities.DbConnection;
 
 public class BuyerService {
@@ -38,6 +40,33 @@ public class BuyerService {
 			DbConnection.query(sql);
 			
 		}
+	}
+	
+	public Buyer buyerExist(String emailId) throws SQLException {
+		Buyer b = null;
+		String retreivedPassword = "";
+		String fName = "";
+		String buyerId = "";
+		String lName = "";
+		String state = "";
+		String city = "";
+		String retreivedEmailId = "";
+		
+		String query = "select * from buyer where emailId ='" + emailId + "'";
+		ResultSet resultSet = DbConnection.selectQuery(query);
+		while (resultSet.next()) {
+			retreivedPassword = resultSet.getString("password");
+			fName = resultSet.getString("firstName");
+			buyerId = resultSet.getString("buyerId");
+			lName = resultSet.getString("lastName");
+			state = resultSet.getString("state");
+			retreivedEmailId = resultSet.getString("emailId");
+			city = resultSet.getString("city");
+		}
+		if(retreivedEmailId != null && !retreivedEmailId.trim().equals("")) {
+			b = new Buyer(fName, lName, emailId, retreivedPassword, state, city, Constants.BUYER);
+		}
+		return b;
 	}
 	
 }

@@ -25,6 +25,9 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("/UI/login.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
+			String css = this.getClass().getResource("application.css").toExternalForm();
+			scene.getStylesheets().add(css);
+			stage. setResizable(false);
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -47,6 +50,7 @@ public class Main extends Application {
 				fc.initData(o);
 			}
 			stage.getScene().setRoot(root);
+			stage. setResizable(false);
 			stage.show();
 		} catch (IOException e) {
 			e.printStackTrace();

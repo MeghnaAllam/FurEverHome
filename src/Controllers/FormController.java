@@ -47,6 +47,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -70,6 +72,9 @@ public class FormController implements Initializable {
 
     @FXML
     private RadioButton cats;
+    
+    @FXML
+    private ImageView imageView;
 
     @FXML
     private RadioButton dogs;
@@ -396,7 +401,7 @@ System.out.println(sql);
         
 	public void addPetsClear() {
         ObservableList<String> items = FXCollections.observableArrayList();
-        listview.setItems(items);
+      //  listview.setItems(items);
 		petNameInput.setText("");
 		petAgeInput.setText("");
 		petBreedInput.setText("");
@@ -465,18 +470,6 @@ System.out.println(sql);
 				    				setActivityPetDetail(selectedPet);
 				    				ArrayList<InterestedBuyerInfo> buyer = interestedBuyersMap.get(selectedPet);
 				    				if(buyer != null && buyer.size() > 0) {
-				    					boolean allPending = true;
-				    					for(InterestedBuyerInfo b : buyer){
-				    						if(b.getStatus() == Constants.APPROVED || b.getStatus() == Constants.REJECTED) {
-				    							allPending = false;
-				    							break;
-				    						}
-				    					}
-				    					if(!allPending) {
-				    						adApproveBtn.setVisible(false);
-				    					}else {
-				    						adApproveBtn.setVisible(true);
-				    					}
 				    					ObservableList<InterestedBuyerInfo> ibiObservableList = FXCollections.observableArrayList(buyer);
 				    					filladTable(ibiObservableList, selectedPet.getPetId());
 				    				}
@@ -543,6 +536,20 @@ System.out.println(sql);
 		        });
 		    return row;
 		});
+		
+		boolean allPending = true;
+		for(InterestedBuyerInfo b : ibiObservableList){
+			if(b.getStatus().equals(Constants.APPROVED)) {
+				allPending = false;
+				break;
+			}
+		}
+		if(allPending) {
+			adApproveBtn.setVisible(true);
+		}else {
+			adApproveBtn.setVisible(false);
+		}
+		adTable.refresh();
 	}
 	
 	private void setApproveStatus(ArrayList<Integer> asList, int petId) {
@@ -766,9 +773,9 @@ System.out.println(sql);
 		
 		try {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Error Message");
+		alert.setTitle("Logout Message");
 		alert.setHeaderText(null);
-		alert.setContentText("Are you sure you want to logout");
+		alert.setContentText("Are you sure you want to logout?");
 		
 		Optional<ButtonType> option = alert.showAndWait();
 		
@@ -784,6 +791,11 @@ System.out.println(sql);
 	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		 File wordImage = new File("src/images/biggest.png");
+		 Image imageRight = new Image(wordImage.toURI().toString());
+		 imageView.setImage(imageRight);
+		
 		myChoiceBox.getItems().addAll(userOptions);
 		sellerAdPane.setVisible(false);
 		myChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -823,7 +835,13 @@ System.out.println(sql);
 	       if(seller != null) {
 	    	   
 	       
-	        String query = "select * from petinfo where sellerId = " + seller.getSellerId() + ";";
+	        String query = "SELECT *\r\n"
+	        		+ "FROM petinfo pi\r\n"
+	        		+ "WHERE pi.id NOT IN (\r\n"
+	        		+ "    SELECT id\r\n"
+	        		+ "    FROM petBuyer\r\n"
+	        		+ "    WHERE status IN ('Approved', 'Rejected') \r\n"
+	        		+ ") and pi.sellerID = " + seller.getSellerId() + ";";
 
 
 	        //System.out.println("query " + query);

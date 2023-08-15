@@ -12,29 +12,28 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginController">
+<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="678.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginController">
    <children>
-      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: gray;">
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="462.0" prefWidth="411.0" style="-fx-background-color: #966567;">
          <children>
-            <ImageView fitHeight="166.0" fitWidth="341.0" layoutX="8.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="leftimageView" fitHeight="166.0" fitWidth="297.0" layoutX="56.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
-      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="228.0" style="-fx-background-color: white;">
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="462.0" prefWidth="269.0" style="-fx-background-color: #d49587;">
          <children>
-            <ImageView fitHeight="114.0" fitWidth="152.0" layoutX="40.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-            <Label layoutX="62.0" layoutY="87.0" prefHeight="30.0" prefWidth="107.0" text="Image If needed" />
-            <Label alignment="CENTER_RIGHT" layoutX="3.0" layoutY="142.0" prefHeight="24.0" prefWidth="74.0" text="Email :" textAlignment="RIGHT" textOverrun="CLIP">
+            <ImageView fx:id="rightimageView" fitHeight="100.0" fitWidth="250.0" layoutX="9.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" />
+            <Label alignment="CENTER_RIGHT" layoutX="25.0" layoutY="205.0" prefHeight="24.0" prefWidth="74.0" style="-fx-font-weight: bold;" text="Email :" textAlignment="RIGHT" textFill="#966567" textOverrun="CLIP">
                <font>
-                  <Font size="13.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
-            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="3.0" layoutY="179.0" prefHeight="24.0" prefWidth="74.0" text="Password :" textAlignment="JUSTIFY" textOverrun="CLIP">
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="26.0" layoutY="243.0" prefHeight="24.0" prefWidth="74.0" style="-fx-font-weight: bold;" text="Password :" textAlignment="JUSTIFY" textFill="#966567" textOverrun="CLIP">
                <font>
-                  <Font size="13.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="emailIdField" layoutX="80.0" layoutY="141.0" prefHeight="26.0" prefWidth="139.0" />
-            <Button layoutX="40.0" layoutY="239.0" mnemonicParsing="false" onAction="#onLogin" prefHeight="26.0" prefWidth="152.0" style="-fx-background-color: green; -fx-text-fill: white; -fx-font-weight: bold;" text="LOGIN" wrapText="true">
+            <TextField fx:id="emailIdField" layoutX="102.0" layoutY="204.0" prefHeight="26.0" prefWidth="139.0" />
+            <Button layoutX="63.0" layoutY="294.0" mnemonicParsing="false" onAction="#onLogin" prefHeight="30.0" prefWidth="152.0" style="-fx-background-color: #70a791; -fx-text-fill: #EDE9D6; -fx-font-weight: bold;" text="LOGIN" wrapText="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -42,21 +41,21 @@
                   <ColorAdjust />
                </effect>
             </Button>
-            <Hyperlink fx:id="forgotPasswordBtn" layoutX="62.0" layoutY="266.0" onAction="#handleForgotPassword" text="Forgot Password">
+            <Hyperlink fx:id="forgotPasswordBtn" layoutX="83.0" layoutY="324.0" onAction="#handleForgotPassword" style="-fx-font-weight: bold;" text="Forgot Password" textFill="#ede9d6">
                <font>
-                  <Font size="13.0" />
+                  <Font size="14.0" />
                </font>
             </Hyperlink>
-            <Label alignment="CENTER" layoutX="78.0" layoutY="310.0" prefHeight="26.0" prefWidth="74.0" style="-fx-font-weight: bold;" text="New Here ?">
+            <Label alignment="CENTER" layoutX="61.0" layoutY="376.0" prefHeight="26.0" prefWidth="82.0" style="-fx-font-weight: bold;" text="New Here?" textFill="#966567">
                <font>
                   <Font size="13.0" />
                </font></Label>
-            <Hyperlink alignment="CENTER" layoutX="81.0" layoutY="330.0" onAction="#onSignUp" prefHeight="24.0" prefWidth="64.0" text="Sign Up">
+            <Hyperlink alignment="CENTER" layoutX="132.0" layoutY="376.0" onAction="#onSignUp" prefHeight="26.0" prefWidth="74.0" style="-fx-font-weight: bold;" text="Sign Up" textFill="#ede9d6">
                <font>
-                  <Font size="13.0" />
+                  <Font size="14.0" />
                </font>
             </Hyperlink>
-            <PasswordField fx:id="passwordField" layoutX="80.0" layoutY="178.0" prefHeight="26.0" prefWidth="139.0" />
+            <PasswordField fx:id="passwordField" layoutX="103.0" layoutY="242.0" prefHeight="26.0" prefWidth="139.0" />
          </children>
       </AnchorPane>
    </children>
